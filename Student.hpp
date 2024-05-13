@@ -4,6 +4,9 @@
 
 using namespace std;
 
+/**
+ * @brief Object that holds the necessary information for a student
+ */
 class Student
 {
 private:
