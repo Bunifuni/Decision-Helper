@@ -31,8 +31,8 @@ Student::Student(string name, string semGroup, uint8_t points)
  */
 Student::Student(char *csvLine, size_t size)
 {
-    char *funcArg = new char[size];         // stores argument for exception-handling because argument will be altered
-    copy(csvLine, csvLine + size, funcArg); // deep copy of function argument
+    char *funcArg = new char[size]; // stores argument for exception-handling because argument will be altered
+    copy(csvLine, csvLine + size + 1, funcArg); // deep copy of function argument (+1 for copying string-end aka \0)
 
     const char *delimiter = DELIMITER;
     vector<string> tokens = separateLine(csvLine, delimiter);
@@ -44,8 +44,14 @@ Student::Student(char *csvLine, size_t size)
     }
     catch (std::out_of_range &exc)
     {
-        cerr << "Error:\t" << exc.what() << "\tat creating Student-Obj with\n\t\"" << funcArg
-             << "\"" << endl;
+        cerr << "Error:\t" << exc.what() << "\tat creating Student-Obj with:\n\t\""
+             << funcArg << "\"" << endl;
+        throw;
+    }
+    catch (std::invalid_argument &excia)
+    {
+        cerr << "Error:\t" << excia.what() << "\tat creating Student-Obj with invalid arg for points:\n\t\""
+             << funcArg << "\"" << endl;
         throw;
     }
 }
