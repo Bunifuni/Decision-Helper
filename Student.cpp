@@ -32,7 +32,7 @@ Student::Student(string name, string semGroup, uint8_t points)
 Student::Student(char *csvLine, size_t size)
 {
     char *funcArg = new char[size];         // stores argument for exception-handling because argument will be altered
-    copy(csvLine, csvLine + size, funcArg); // deep copy of funtction argument
+    copy(csvLine, csvLine + size, funcArg); // deep copy of function argument
 
     const char *delimiter = DELIMITER;
     vector<string> tokens = separateLine(csvLine, delimiter);
