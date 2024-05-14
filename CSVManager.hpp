@@ -8,6 +8,7 @@ private:
     std::string filename;
     std::vector<Student> students;
     Student createStudentFromCSV(char *csvLine, size_t size);
+    std::string createCSVFromStudent(Student stud);
     vector<Student> readCSV(string filename);
     void writeCSV(string filename);
     void changePoints(string name, bool incr);
