@@ -1,0 +1,107 @@
+#include <fstream>
+#include <iostream>
+#include "CSVManager.hpp"
+
+/**
+ * @brief Reads the given CSV-file and returns list of students
+ *
+ * @param filename name of csv-file
+ * @return vector<Student>
+ */
+std::vector<Student> CSVManager::readCSV(std::string filename)
+{
+    std::vector<Student> studVec;
+    std::ifstream csvStream(filename); // open stream
+    std::string line;
+    std::cout << "List:\n";
+    while (getline(csvStream, line))
+    {
+        studVec.push_back(
+            Student(line.data(), line.length()));
+        std::cout << studVec.back().getName() << "\t" << studVec.back().getSemGroup()
+                  << "\t" << to_string(studVec.back().getPoints()) << std::endl;
+    }
+    csvStream.close(); // close stream
+    return studVec;
+}
+
+void CSVManager::writeCSV(std::string filename)
+{
+    
+}
+
+/**
+ * @brief Changes points of student by 1 point
+ * Displays error-message when no student with given name was found.
+ *
+ * @param name name of student
+ * @param doIncrement when true increments by 1; otherwise decrements by 1
+ */
+void CSVManager::changePoints(string name, bool doIncrement)
+{
+    Student *stud = getStudent(name);
+    if (stud != nullptr)
+    {
+        if (doIncrement)
+        {
+            stud->incrementPoints();
+        }
+        else
+        {
+            stud->decrementPoints();
+        }
+        writeCSV(this->filename);
+        std::cout << name << " has now " << stud->getPointsAsStr() << " points" << std::endl;
+    }
+    else
+    {
+        std::cerr << "Error:\t" << "No existing student with name \"" << name << "\"" << std::endl;
+    }
+}
+
+CSVManager::CSVManager(std::string filename)
+{
+    this->filename = filename;
+    this->students = readCSV(filename);
+}
+
+/**
+ * @brief Returns reference to Student-Obj with matching name.
+ * Returns nullptr when no matching student found.
+ *
+ * @param name name of student to search for
+ * @return Student*
+ */
+Student *CSVManager::getStudent(string name)
+{
+    size_t i = 0;
+    while (i < students.size())
+    {
+        if (this->students.at(i).getName() == name)
+        {
+            return &students.at(i);
+        }
+        ++i;
+    }
+    return nullptr;
+}
+
+/**
+ * @brief Increments points of student with given name
+ *
+ * @param name name of student
+ */
+void CSVManager::incrementPoints(string name)
+{
+    changePoints(name, true);
+}
+
+/**
+ * @brief Decrements points of student with given name
+ *
+ * @param name name of student
+ */
+void CSVManager::decrementPoints(string name)
+{
+    changePoints(name, false);
+}
