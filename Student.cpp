@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cstring>
-#include <stdexcept>
 #include "Student.hpp"
 
 using namespace std;
