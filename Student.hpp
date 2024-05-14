@@ -16,7 +16,6 @@ private:
 
 public:
     Student(string name, string semGroup, uint8_t points);
-    Student(char *csvLine, size_t size);
     string getName();
     string getSemGroup();
     uint8_t getPoints();

@@ -3,11 +3,6 @@
 #include <stdexcept>
 #include "Student.hpp"
 
-#define DELIMITER ",\n"
-#define COLUMN_NAME 0
-#define COLUMN_SEMGROUP 1
-#define COLUMN_POINTS 2
-
 using namespace std;
 
 /**
@@ -22,38 +17,6 @@ Student::Student(string name, string semGroup, uint8_t points)
     this->name = name;
     this->semGroup = semGroup;
     this->points = points;
-}
-
-/**
- * @brief Construct a new Student object from csvLine
- *
- * @param csvLine string in csv-format with student information
- */
-Student::Student(char *csvLine, size_t size)
-{
-    char *funcArg = new char[size];             // stores argument for exception-handling because argument will be altered
-    copy(csvLine, csvLine + size + 1, funcArg); // deep copy of function argument (+1 for copying string-end aka \0)
-
-    const char *delimiter = DELIMITER;
-    vector<string> tokens = separateLine(csvLine, delimiter);
-    try
-    {
-        this->name = tokens.at(COLUMN_NAME);
-        this->semGroup = tokens.at(COLUMN_SEMGROUP);
-        this->points = (uint8_t)stoi(tokens.at(COLUMN_POINTS));
-    }
-    catch (std::out_of_range &exc)
-    {
-        cerr << "Error:\t" << exc.what() << "\tat creating Student-Obj with:\n\t\""
-             << funcArg << "\"" << endl;
-        throw;
-    }
-    catch (std::invalid_argument &excia)
-    {
-        cerr << "Error:\t" << excia.what() << "\tat creating Student-Obj with invalid arg for points:\n\t\""
-             << funcArg << "\"" << endl;
-        throw;
-    }
 }
 
 /**

@@ -2,6 +2,11 @@
 #include <iostream>
 #include "CSVManager.hpp"
 
+#define DELIMITER ",\n"
+#define COLUMN_NAME 0
+#define COLUMN_SEMGROUP 1
+#define COLUMN_POINTS 2
+
 /**
  * @brief Reads the given CSV-file and returns list of students
  *
@@ -17,7 +22,7 @@ std::vector<Student> CSVManager::readCSV(std::string filename)
     while (getline(csvStream, line))
     {
         studVec.push_back(
-            Student(line.data(), line.length()));
+            createStudentFromCSV(line.data(), line.length()));
         std::cout << studVec.back().getName() << "\t" << studVec.back().getSemGroup()
                   << "\t" << to_string(studVec.back().getPoints()) << std::endl;
     }
@@ -27,7 +32,11 @@ std::vector<Student> CSVManager::readCSV(std::string filename)
 
 void CSVManager::writeCSV(std::string filename)
 {
-    
+    // std::ofstream csvStream(filename); // open stream
+    // for (size_t i = 0; i < this->students.size(); i++)
+    // {
+    // }
+    // csvStream.close(); // close stream
 }
 
 /**
@@ -104,4 +113,41 @@ void CSVManager::incrementPoints(string name)
 void CSVManager::decrementPoints(string name)
 {
     changePoints(name, false);
+}
+
+/**
+ * @brief Creates a new Student object from csvLine
+ *
+ * @param csvLine string in csv-format with student information
+ * @param size length of csvLine
+ */
+Student CSVManager::createStudentFromCSV(char *csvLine, size_t size)
+{
+    char *funcArg = new char[size];             // stores argument for exception-handling because argument will be altered
+    copy(csvLine, csvLine + size + 1, funcArg); // deep copy of function argument (+1 for copying string-end aka \0)
+
+    const char *delimiter = DELIMITER;
+    vector<string> tokens = separateLine(csvLine, delimiter);
+    try
+    {
+        return Student(
+            tokens.at(COLUMN_NAME),                 // name
+            tokens.at(COLUMN_SEMGROUP),             // seminar group
+            (uint8_t)stoi(tokens.at(COLUMN_POINTS)) // points
+        );
+    }
+    catch (std::out_of_range &exc)
+    {
+        cerr << "Error:\t" << exc.what()
+             << "\tat creating Student-Obj with:\n\t\""
+             << funcArg << "\"" << endl;
+        throw;
+    }
+    catch (std::invalid_argument &excia)
+    {
+        cerr << "Error:\t" << excia.what()
+             << "\tat creating Student-Obj with invalid arg for points:\n\t\""
+             << funcArg << "\"" << endl;
+        throw;
+    }
 }
