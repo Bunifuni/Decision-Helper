@@ -31,7 +31,7 @@ Student::Student(string name, string semGroup, uint8_t points)
  */
 Student::Student(char *csvLine, size_t size)
 {
-    char *funcArg = new char[size]; // stores argument for exception-handling because argument will be altered
+    char *funcArg = new char[size];             // stores argument for exception-handling because argument will be altered
     copy(csvLine, csvLine + size + 1, funcArg); // deep copy of function argument (+1 for copying string-end aka \0)
 
     const char *delimiter = DELIMITER;
@@ -84,6 +84,39 @@ string Student::getSemGroup()
 uint8_t Student::getPoints()
 {
     return this->points;
+}
+
+/**
+ * @brief Returns points as string
+ * 
+ * @return string 
+ */
+string Student::getPointsAsStr()
+{
+    return std::to_string(this->points);
+}
+
+/**
+ * @brief Increments student's points by 1
+ */
+void Student::incrementPoints()
+{
+    this->points++;
+}
+
+/**
+ * @brief Decrements student's points by 1
+ */
+void Student::decrementPoints()
+{
+    if (this->points > 0)
+    {
+        this->points--;
+    }
+    else
+    {
+        std::cout << "Warning: student " << this->name << " has no points to lose (already 0 points)" << std::endl;
+    }
 }
 
 /**

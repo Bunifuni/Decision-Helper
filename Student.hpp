@@ -20,5 +20,8 @@ public:
     string getName();
     string getSemGroup();
     uint8_t getPoints();
+    string getPointsAsStr();
+    void incrementPoints();
+    void decrementPoints();
 };
 vector<string> separateLine(char *line, const char *delimiter);
