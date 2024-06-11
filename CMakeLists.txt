@@ -4,6 +4,7 @@ project(Descision-Helper VERSION 0.1.0 LANGUAGES C CXX)
 include(CTest)
 enable_testing()
 
+# Add the main executable
 add_executable(Descision-Helper main.cpp Student.cpp CSVManager.cpp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
@@ -22,3 +23,14 @@ FetchContent_Declare(
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
+
+# Add the test executable
+add_executable(test_cases unit_tests.cpp Student.cpp)
+
+target_link_libraries(
+  test_cases
+  GTest::gtest_main
+)
+
+include(GoogleTest)
+gtest_discover_tests(test_cases)
