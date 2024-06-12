@@ -1,6 +1,9 @@
 #include <gtest/gtest.h>
+#include <filesystem>
 #include "Student.hpp"
 #include "CSVManager.hpp"
+
+namespace fs = std::filesystem;
 
 // Fixtures
 class StudentTest : public testing::Test
@@ -27,10 +30,18 @@ protected:
 
     CSVManagerTest()
     {
-        csvMan = new CSVManager("mock_students.csv");
+        fs::copy("mock_students.csv", "test_students.csv"); // create editable file
+        csvMan = new CSVManager("test_students.csv");
     }
+
+    ~CSVManagerTest()
+    {
+        fs::remove("test_students.csv"); // remove file for testing
+    }    
 };
 
+/* --- Testing class Student --- */
+// Testing basic get-methods
 TEST_F(StudentTest, GetAssertions)
 {
     // Test getName
@@ -54,7 +65,7 @@ TEST_F(StudentTest, GetAssertions)
     ASSERT_STREQ((stud3->getPointsAsStr()).c_str(), "2");
     ASSERT_STREQ((stud4->getPointsAsStr()).c_str(), "4");
 }
-
+// Testing increment-method
 TEST_F(StudentTest, IncrementAssertions)
 {
     // Old Points
@@ -73,7 +84,7 @@ TEST_F(StudentTest, IncrementAssertions)
     ASSERT_EQ(stud3->getPoints(), p3 + 1);
     ASSERT_EQ(stud4->getPoints(), p4 + 1);
 }
-
+// Testing decrement-method
 TEST_F(StudentTest, DecrementAssertions)
 {
     // Old Points
@@ -93,12 +104,14 @@ TEST_F(StudentTest, DecrementAssertions)
     ASSERT_EQ(stud4->getPoints(), max(p4 - 1, 0));
 }
 
+/* --- Testing class CSVManager --- */
+// Testing getStudent-method
 TEST_F(CSVManagerTest, GetStudentAssertions)
 {
     Student *stud1 = csvMan->getStudent("MMuster");
     Student *stud2 = csvMan->getStudent("KReide");
     Student *stud3 = csvMan->getStudent("noExisting");
-    ASSERT_NE(stud1, nullptr);  // stud1 points to existing obj
-    ASSERT_NE(stud2, nullptr);  // stud2 points to existing obj
-    ASSERT_EQ(stud3, nullptr);  // stud3 points to nullptr (no stud with given name)
+    ASSERT_NE(stud1, nullptr); // stud1 points to existing obj
+    ASSERT_NE(stud2, nullptr); // stud2 points to existing obj
+    ASSERT_EQ(stud3, nullptr); // stud3 points to nullptr (no stud with given name)
 }
