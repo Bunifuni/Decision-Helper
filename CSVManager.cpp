@@ -2,9 +2,9 @@
 #include <iostream>
 #include "CSVManager.hpp"
 
-#define COLUMN_COUNT 3
 #define DELIMITER ",\n"
 
+#define COLUMN_COUNT 3
 #define COLUMN_NAME 0
 #define COLUMN_SEMGROUP 1
 #define COLUMN_POINTS 2
@@ -92,7 +92,7 @@ std::vector<Student> CSVManager::readCSV(std::string filename)
     while (getline(csvStream, line))
     {
         studVec.push_back(
-            createStudentFromCSV((char*)line.c_str(), line.length()));
+            createStudentFromCSV((char *)line.c_str(), line.length()));
         std::cout << studVec.back().getName() << "\t" << studVec.back().getSemGroup()
                   << "\t" << to_string(studVec.back().getPoints()) << std::endl;
     }
