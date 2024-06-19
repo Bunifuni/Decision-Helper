@@ -5,7 +5,7 @@ include(CTest)
 enable_testing()
 
 # Add the main executable
-add_executable(Descision-Helper main.cpp Student.cpp CSVManager.cpp)
+add_executable(Descision-Helper main.cpp Student.cpp CSVManager.cpp DescisionPipeline.cpp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
