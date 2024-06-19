@@ -88,13 +88,10 @@ std::vector<Student> CSVManager::readCSV(std::string filename)
     std::vector<Student> studVec;
     std::ifstream csvStream(filename); // open stream
     std::string line;
-    std::cout << "List:\n";
     while (getline(csvStream, line))
     {
         studVec.push_back(
             createStudentFromCSV((char *)line.c_str(), line.length()));
-        std::cout << studVec.back().getName() << "\t" << studVec.back().getSemGroup()
-                  << "\t" << to_string(studVec.back().getPoints()) << std::endl;
     }
     csvStream.close(); // close stream
     return studVec;
