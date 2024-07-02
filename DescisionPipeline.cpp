@@ -83,6 +83,24 @@ void DescisionPipeline::rulePreferredPoints(uint8_t preferredPoints)
             this->studPriorizing.erase(studName);
     }
 }
+/**
+ * @brief Adds <priorityValue> to priorityCount of each student belonging in the seminar.
+ * 
+ * @param semGroup current seminar group
+ * @param priorityValue value added to priority count
+ */
+void DescisionPipeline::rulePriorizeRightSemGroup(std::string semGroup, uint8_t priorityValue)
+{
+    for (auto it = this->studPriorizing.begin(); it != this->studPriorizing.end(); ++it)
+    {
+        std::string studName = it->first;
+        // students semGroup equals current semGroup?
+        if (this->csvMan.getStudent(studName)->getSemGroup() == semGroup)
+        {
+            this->studPriorizing.at(studName) += priorityValue; // increase priority
+        }
+    }
+}
 
 DescisionPipeline::DescisionPipeline(InputStruct const *input) : csvMan(CSVManager(input->csvFile)), input(input)
 {
