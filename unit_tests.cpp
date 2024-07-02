@@ -64,18 +64,21 @@ protected:
         input1->csvFile = "test_students.csv";
         input1->studSelection = studs;
         input1->verbose = true;
+        input1->semGroup = "22INB-2";
         pipe1 = new DescisionPipeline(input1);
 
         input2 = new InputStruct;
         input2->csvFile = "test_students.csv";
         input2->studSelection = studs;
         input2->preferredPoints = 2;
+        input2->semGroup = "21INB-1";
         pipe2 = new DescisionPipeline(input2);
 
         input3 = new InputStruct;
         input3->csvFile = "test_students.csv";
         input3->studSelection = studs;
         input3->preferredPoints = 3;
+        input3->semGroup = "23INB-3";
         pipe3 = new DescisionPipeline(input3);
 
         input4 = new InputStruct;
@@ -103,11 +106,20 @@ protected:
     {
         return pipe->closestGEQPointsStudents(geqPoints, pipe->studPriorizing);
     }
+    void rulePriorizeCorrectSemGroup(std::string semGroup, uint8_t priorizeValue, DescisionPipeline *pipe)
+    {
+        pipe->rulePriorizeCorrectSemGroup(semGroup, priorizeValue);
+    }
 
     // Map Count
     int getRemainingSelectionSize(DescisionPipeline *pipe)
     {
         return pipe->studPriorizing.size();
+    }
+    // See priorize value
+    uint8_t getPriorizing(std::string studName, DescisionPipeline *pipe)
+    {
+        return pipe->studPriorizing.at(studName);
     }
 };
 /***********************************************************************************/
@@ -190,7 +202,7 @@ TEST_F(CSVManagerTest, GetStudentAssertions)
 
 /* --- Testing class DescisionPipeline --- */
 // Testing closestLEQPointsStudents
-TEST_F(DescisionPipelineTest, closestLEQPointsStudentsAssertions)
+TEST_F(DescisionPipelineTest, ClosestLEQPointsStudentsAssertions)
 {
     // selection = {"noExistingOne" -> NaN, "KReide" -> 4, "MMuster" -> 1, "JSubjekt" -> 1, "RSalze" -> 1}
     // preferredPoints = 0
@@ -203,7 +215,7 @@ TEST_F(DescisionPipelineTest, closestLEQPointsStudentsAssertions)
     ASSERT_EQ(closestLEQPointsStudents(4, pipe4).size(), 1); // Kreide
 }
 // Testing closestLEQPointsStudents
-TEST_F(DescisionPipelineTest, closestGEQPointsStudentsAssertions)
+TEST_F(DescisionPipelineTest, ClosestGEQPointsStudentsAssertions)
 {
     // selection = {"noExistingOne" -> NaN, "KReide" -> 4, "MMuster" -> 1, "JSubjekt" -> 1, "RSalze" -> 1}
     // preferredPoints = 0
@@ -234,4 +246,41 @@ TEST_F(DescisionPipelineTest, RulePreferredPointsAssertions)
     // preferredPoints = 4
     rulePreferredPoints(pipe4);
     ASSERT_EQ(getRemainingSelectionSize(pipe4), 1);
+}
+// Testing rulePriorizeCorrectSemGroup
+TEST_F(DescisionPipelineTest, RulePriorizeCorrectSemGroupAssertions)
+{
+    // selection = {"noExistingOne" -> NaN, "KReide" -> 22INB-1; "MMuster" -> 21INB-1; "JSubjekt" -> 22INB-2; "RSalze" -> 22INB-2}
+    int priorizeValue;
+    // Test on semGroup "22INB-2" with priorizeValue 2
+    priorizeValue = 2;
+    rulePriorizeCorrectSemGroup("22INB-2", priorizeValue, pipe1);
+    ASSERT_EQ(getPriorizing("KReide", pipe1), 0);               // not in semGroup
+    ASSERT_EQ(getPriorizing("MMuster", pipe1), 0);              // not in semGroup
+    ASSERT_EQ(getPriorizing("JSubjekt", pipe1), priorizeValue); // in semGroup
+    ASSERT_EQ(getPriorizing("RSalze", pipe1), priorizeValue);   // in semGroup
+
+    // Test on semGroup "22INB-2" with priorizeValue 5
+    priorizeValue = 5;
+    rulePriorizeCorrectSemGroup("22INB-2", priorizeValue, pipe2);
+    ASSERT_EQ(getPriorizing("KReide", pipe2), 0);               // not in semGroup
+    ASSERT_EQ(getPriorizing("MMuster", pipe2), 0);              // in semGroup
+    ASSERT_EQ(getPriorizing("JSubjekt", pipe2), priorizeValue); // not in semGroup
+    ASSERT_EQ(getPriorizing("RSalze", pipe2), priorizeValue);   // in semGroup
+
+    // Test on semGroup "21INB-1" with priorizeValue 3
+    priorizeValue = 3;
+    rulePriorizeCorrectSemGroup("21INB-1", priorizeValue, pipe3);
+    ASSERT_EQ(getPriorizing("KReide", pipe3), 0);              // not in semGroup
+    ASSERT_EQ(getPriorizing("MMuster", pipe3), priorizeValue); // in semGroup
+    ASSERT_EQ(getPriorizing("JSubjekt", pipe3), 0);            // not in semGroup
+    ASSERT_EQ(getPriorizing("RSalze", pipe3), 0);              // not in semGroup
+
+    // Test on semGroup "23INB-3" with priorizeValue 3
+    priorizeValue = 3;
+    rulePriorizeCorrectSemGroup("23INB-3", priorizeValue, pipe4);
+    ASSERT_EQ(getPriorizing("KReide", pipe4), 0);   // not in semGroup
+    ASSERT_EQ(getPriorizing("MMuster", pipe4), 0);  // not in semGroup
+    ASSERT_EQ(getPriorizing("JSubjekt", pipe4), 0); // not in semGroup
+    ASSERT_EQ(getPriorizing("RSalze", pipe4), 0);   // not in semGroup
 }
