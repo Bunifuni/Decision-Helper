@@ -5,8 +5,11 @@
 #define CSVFILE "students.csv"
 
 struct InputStruct {
+    std::string csvFile = CSVFILE;
+    
     bool verbose = false;
     uint8_t preferredPoints = 0;
-    std::string csvFile = CSVFILE;
+    std::string semGroup = "";
+
     std::vector<std::string> studSelection;
 };
