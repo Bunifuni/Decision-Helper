@@ -89,7 +89,7 @@ void DescisionPipeline::rulePreferredPoints(uint8_t preferredPoints)
  * @param semGroup current seminar group
  * @param priorityValue value added to priority count
  */
-void DescisionPipeline::rulePriorizeRightSemGroup(std::string semGroup, uint8_t priorityValue)
+void DescisionPipeline::rulePriorizeCorrectSemGroup(std::string semGroup, uint8_t priorityValue)
 {
     for (auto it = this->studPriorizing.begin(); it != this->studPriorizing.end(); ++it)
     {

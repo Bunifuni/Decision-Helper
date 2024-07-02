@@ -17,7 +17,7 @@ private:
     std::set<std::string> closestGEQPointsStudents(uint8_t geqPoints, std::map<std::string, uint8_t> studs);
 
     void rulePreferredPoints(uint8_t preferredPoints);
-    void rulePriorizeRightSemGroup(std::string semGroup, uint8_t priorityValue);
+    void rulePriorizeCorrectSemGroup(std::string semGroup, uint8_t priorityValue);
 
 public:
     DescisionPipeline(InputStruct const *input);
