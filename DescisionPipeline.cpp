@@ -85,7 +85,7 @@ void DescisionPipeline::rulePreferredPoints(uint8_t preferredPoints)
 }
 /**
  * @brief Adds <priorityValue> to priorityCount of each student belonging in the seminar.
- * 
+ *
  * @param semGroup current seminar group
  * @param priorityValue value added to priority count
  */
@@ -96,6 +96,28 @@ void DescisionPipeline::rulePriorizeCorrectSemGroup(std::string semGroup, uint8_
         std::string studName = it->first;
         // students semGroup equals current semGroup?
         if (this->csvMan.getStudent(studName)->getSemGroup() == semGroup)
+        {
+            this->studPriorizing.at(studName) += priorityValue; // increase priority
+        }
+    }
+}
+
+/**
+ * @brief Adds <priorityValue> to priority count of repeaters. Repeaters will be recognized by the
+ * 2nd digit of their seminar group (2nd digit of the year), since it has to differ for being
+ * repeater. 
+ * 
+ * @param semGroup current seminar group
+ * @param priorityValue value added to priority count
+ */
+void DescisionPipeline::rulePriorizeRepeaters(std::string semGroup, uint8_t priorityValue)
+{
+    for (auto it = this->studPriorizing.begin(); it != this->studPriorizing.end(); ++it)
+    {
+        std::string studName = it->first;
+        std::string studSemGroup = this->csvMan.getStudent(studSemGroup)->getSemGroup();
+        // Repeaters seminar group differ guaranteed in second digit of the year (XYINB-Z)
+        if (studSemGroup[1] != semGroup[1])
         {
             this->studPriorizing.at(studName) += priorityValue; // increase priority
         }
