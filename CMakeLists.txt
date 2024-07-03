@@ -4,6 +4,8 @@ project(Descision-Helper VERSION 0.1.0 LANGUAGES C CXX)
 include(CTest)
 enable_testing()
 
+cmake_policy(SET CMP0135 NEW)
+
 # Add the main executable
 add_executable(Descision-Helper main.cpp Student.cpp CSVManager.cpp DescisionPipeline.cpp)
 
