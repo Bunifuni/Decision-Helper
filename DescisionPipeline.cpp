@@ -84,7 +84,7 @@ void DescisionPipeline::rulePreferredPoints(uint8_t preferredPoints)
     }
 }
 /**
- * @brief Adds <priorityValue> to priorityCount of each student belonging in the seminar.
+ * @brief Adds <priorityValue> to priority count of each student belonging in the seminar.
  *
  * @param semGroup current seminar group
  * @param priorityValue value added to priority count
