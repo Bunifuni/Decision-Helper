@@ -76,11 +76,13 @@ void DescisionPipeline::rulePreferredPoints(uint8_t preferredPoints)
         remainingStuds = closestGEQPointsStudents(preferredPoints + 1, this->studPriorizing);
     }
     // Discard students from map that are not remaining students
-    for (auto it = this->studPriorizing.begin(); it != this->studPriorizing.end(); ++it)
+    for (auto it = this->studPriorizing.begin(); it != this->studPriorizing.end();)
     {
         std::string studName = it->first;
         if (remainingStuds.find(studName) == remainingStuds.end()) // if studName not exists in remainStuds
-            this->studPriorizing.erase(studName);
+            it = this->studPriorizing.erase(it);                   // iterator points to position after erased element
+        else
+            it++;
     }
 }
 /**
@@ -101,12 +103,11 @@ void DescisionPipeline::rulePriorizeCorrectSemGroup(std::string semGroup, uint8_
         }
     }
 }
-
 /**
  * @brief Adds <priorityValue> to priority count of repeaters. Repeaters will be recognized by the
  * 2nd digit of their seminar group (2nd digit of the year), since it has to differ for being
- * repeater. 
- * 
+ * repeater.
+ *
  * @param semGroup current seminar group
  * @param priorityValue value added to priority count
  */
