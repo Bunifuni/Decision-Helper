@@ -6,6 +6,7 @@
 #include "DescisionPipeline.hpp"
 
 namespace fs = std::filesystem;
+const char *mockfile = "mock_students.csv";
 
 /******************************* Fixtures ******************************************/
 class StudentTest : public testing::Test
@@ -32,7 +33,7 @@ protected:
 
     CSVManagerTest()
     {
-        fs::copy("mock_students.csv", "test_students.csv"); // create editable file
+        fs::copy(mockfile, "test_students.csv"); // create editable file
         csvMan = new CSVManager("test_students.csv");
     }
 
@@ -56,7 +57,7 @@ protected:
 
     DescisionPipelineTest()
     {
-        fs::copy("mock_students.csv", "test_students.csv"); // create editable file
+        fs::copy(mockfile, "test_students.csv"); // create editable file
 
         std::vector<std::string> studs = {"noExistingOne", "KReide", "MMuster", "JSubjekt", "RSalze"};
 
@@ -109,6 +110,10 @@ protected:
     void rulePriorizeCorrectSemGroup(std::string semGroup, uint8_t priorizeValue, DescisionPipeline *pipe)
     {
         pipe->rulePriorizeCorrectSemGroup(semGroup, priorizeValue);
+    }
+    void rulePriorizeRepeaters(std::string semGroup, uint8_t priorizeValue, DescisionPipeline *pipe)
+    {
+        pipe->rulePriorizeRepeaters(semGroup, priorizeValue);
     }
 
     // Map Count
@@ -283,4 +288,33 @@ TEST_F(DescisionPipelineTest, RulePriorizeCorrectSemGroupAssertions)
     ASSERT_EQ(getPriorizing("MMuster", pipe4), 0);  // not in semGroup
     ASSERT_EQ(getPriorizing("JSubjekt", pipe4), 0); // not in semGroup
     ASSERT_EQ(getPriorizing("RSalze", pipe4), 0);   // not in semGroup
+}
+// Testing rulePriorizeRepeaters
+TEST_F(DescisionPipelineTest, rulePriorizeRepeatersAssertions)
+{
+    // selection = {"noExistingOne" -> NaN, "KReide" -> 22INB-1; "MMuster" -> 21INB-1; "JSubjekt" -> 22INB-2; "RSalze" -> 22INB-2}
+    int priorizeValue;
+    // Test on semGroup "22INB-2" with priorizeValue 2
+    priorizeValue = 2;
+    rulePriorizeRepeaters("22INB-2", priorizeValue, pipe1);
+    ASSERT_EQ(getPriorizing("KReide", pipe1), 0);              // no repeater
+    ASSERT_EQ(getPriorizing("MMuster", pipe1), priorizeValue); // repeater
+    ASSERT_EQ(getPriorizing("JSubjekt", pipe1), 0);            // no repeater
+    ASSERT_EQ(getPriorizing("RSalze", pipe1), 0);              // no repeater
+
+    // Test on semGroup "22INB-2" with priorizeValue 5
+    int priorizeValue2 = 5;
+    rulePriorizeRepeaters("22INB-2", priorizeValue2, pipe1);
+    ASSERT_EQ(getPriorizing("KReide", pipe1), 0);                               // no repeater
+    ASSERT_EQ(getPriorizing("MMuster", pipe1), priorizeValue + priorizeValue2); // repeater
+    ASSERT_EQ(getPriorizing("JSubjekt", pipe1), 0);                             // no repeater
+    ASSERT_EQ(getPriorizing("RSalze", pipe1), 0);                               // no repeater
+
+    // Test on semGroup "23INB-1" with priorizeValue 3
+    priorizeValue = 3;
+    rulePriorizeRepeaters("23INB-1", priorizeValue, pipe3);
+    ASSERT_EQ(getPriorizing("KReide", pipe3), priorizeValue);   // repeater
+    ASSERT_EQ(getPriorizing("MMuster", pipe3), priorizeValue);  // repeater
+    ASSERT_EQ(getPriorizing("JSubjekt", pipe3), priorizeValue); // repeater
+    ASSERT_EQ(getPriorizing("RSalze", pipe3), priorizeValue);   // repeater
 }
