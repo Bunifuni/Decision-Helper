@@ -60,7 +60,8 @@ protected:
         fs::copy(mockfile, "test_students.csv"); // create editable file
 
         std::map<int, std::set<std::string>> studs = {
-            {0, {"noExistingOne", "KReide", "MMuster", "JSubjekt", "RSalze"}}};
+            {1, {"MMuster", "RSalze"}},
+            {3, {"noExistingOne", "KReide", "JSubjekt"}}};
 
         input1 = new InputStruct;
         input1->csvFile = "test_students.csv";
@@ -115,6 +116,10 @@ protected:
     void rulePriorizeRepeaters(std::string semGroup, uint8_t priorizeValue, DescisionPipeline *pipe)
     {
         pipe->rulePriorizeRepeaters(semGroup, priorizeValue);
+    }
+    void ruleFurthestInFront(DescisionPipeline *pipe)
+    {
+        pipe->ruleFurthestInFront();
     }
 
     // Map Count
@@ -318,4 +323,47 @@ TEST_F(DescisionPipelineTest, rulePriorizeRepeatersAssertions)
     ASSERT_EQ(getPriorizing("MMuster", pipe3), priorizeValue);  // repeater
     ASSERT_EQ(getPriorizing("JSubjekt", pipe3), priorizeValue); // repeater
     ASSERT_EQ(getPriorizing("RSalze", pipe3), priorizeValue);   // repeater
+}
+// Testing ruleFurthestInFront
+TEST_F(DescisionPipelineTest, ruleFurthestInFrontAssertions)
+{
+    DescisionPipeline *pipe;
+
+    input1->studSelection = {
+        {1, {"MMuster", "RSalze"}},
+        {3, {"noExistingOne", "KReide", "JSubjekt"}}};
+    pipe = new DescisionPipeline(input1);
+    ruleFurthestInFront(pipe);
+    ASSERT_EQ(getRemainingSelectionSize(pipe), 2); // = size_of {"MMuster", "RSalze"}
+
+    input1->studSelection = {
+        {1, {"MMuster", "RSalze", "KReide"}},
+        {3, {"noExistingOne", "JSubjekt"}}};
+    pipe = new DescisionPipeline(input1);
+    ruleFurthestInFront(pipe);
+    ASSERT_EQ(getRemainingSelectionSize(pipe), 3); // = size_of {"MMuster", "RSalze", "KReide"}
+
+    input1->studSelection = {
+        {0, {}},
+        {1, {"MMuster", "RSalze", "KReide"}},
+        {3, {"noExistingOne", "JSubjekt"}}};
+    pipe = new DescisionPipeline(input1);
+    ruleFurthestInFront(pipe);
+    ASSERT_EQ(getRemainingSelectionSize(pipe), 3); // = size_of {"MMuster", "RSalze", "KReide"}
+
+    input1->studSelection = {
+        {0, {"DoesNotExist"}},
+        {1, {"MMuster", "RSalze", "KReide"}},
+        {3, {"noExistingOne", "JSubjekt"}}};
+    pipe = new DescisionPipeline(input1);
+    ruleFurthestInFront(pipe);
+    ASSERT_EQ(getRemainingSelectionSize(pipe), 3); // = size_of {"MMuster", "RSalze", "KReide"}
+
+    input1->studSelection = {
+        {0, {"DoesNotExist", "JSubjekt"}},
+        {1, {"MMuster", "RSalze", "KReide"}},
+        {3, {"noExistingOne"}}};
+    pipe = new DescisionPipeline(input1);
+    ruleFurthestInFront(pipe);
+    ASSERT_EQ(getRemainingSelectionSize(pipe), 1); // = size_of {"JSubjekt"}
 }
