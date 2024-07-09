@@ -11,5 +11,5 @@ struct InputStruct {
     uint8_t preferredPoints = 0;
     std::string semGroup = "";
 
-    std::map<std::string, int> studSelection;
+    std::map<int, std::set<std::string>> studSelection;
 };

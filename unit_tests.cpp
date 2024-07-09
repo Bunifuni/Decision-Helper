@@ -59,13 +59,8 @@ protected:
     {
         fs::copy(mockfile, "test_students.csv"); // create editable file
 
-        std::map<std::string, int> studs = {
-            {"noExistingOne", 0},
-            {"KReide", 0},
-            {"MMuster", 0},
-            {"JSubjekt", 0},
-            {"RSalze", 0}
-        };
+        std::map<int, std::set<std::string>> studs = {
+            {0, {"noExistingOne", "KReide", "MMuster", "JSubjekt", "RSalze"}}};
 
         input1 = new InputStruct;
         input1->csvFile = "test_students.csv";
