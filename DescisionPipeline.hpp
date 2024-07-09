@@ -19,6 +19,7 @@ private:
     void rulePreferredPoints(uint8_t preferredPoints);
     void rulePriorizeCorrectSemGroup(std::string semGroup, uint8_t priorityValue);
     void rulePriorizeRepeaters(std::string semGroup, uint8_t priorityValue);
+    void ruleFurthestInFront();
 
 public:
     DescisionPipeline(InputStruct const *input);

@@ -1,6 +1,8 @@
 #include <iostream>
 #include <set>
 #include <limits>
+#include <algorithm>
+#include <iterator>
 #include "DescisionPipeline.hpp"
 
 /**
@@ -122,6 +124,46 @@ void DescisionPipeline::rulePriorizeRepeaters(std::string semGroup, uint8_t prio
         {
             this->studPriorizing.at(studName) += priorityValue; // increase priority
         }
+    }
+}
+/**
+ * @brief Removes all students except those sitting furthest in front.
+ *
+ */
+void DescisionPipeline::ruleFurthestInFront()
+{
+    // collect current selection of students as set
+    std::set<std::string> studSelection;
+    for (auto stud : studPriorizing)
+    {
+        studSelection.insert(stud.first);
+    }
+
+    // determine which students in row(ASC) are contained in selection
+    std::set<std::string> studsInRow;
+    std::set<std::string> priorizedStudsInRow;
+    for (int i = 0; priorizedStudsInRow.empty(); i++)
+    {
+        auto row = input->studSelection.find(i);
+        if (row != input->studSelection.end())
+        { // check if row has value
+            studsInRow = row->second;
+            std::set_intersection(
+                studSelection.begin(), studSelection.end(),
+                studsInRow.begin(), studsInRow.end(),
+                std::inserter(priorizedStudsInRow, priorizedStudsInRow.begin())); // Inserter for Not-Read-Only Iterator
+        }
+    }
+
+    // discard all students not in priorizedStudsInRow (= studSelection - priorizedStudsInRow)
+    std::set<std::string> discardStuds;
+    std::set_difference(
+        studSelection.begin(), studSelection.end(),
+        priorizedStudsInRow.begin(), priorizedStudsInRow.end(),
+        std::inserter(discardStuds, discardStuds.begin())); // Inserter for Not-Read-Only Iterator
+    for (std::string studName : discardStuds)
+    {
+        studPriorizing.erase(studName);
     }
 }
 
