@@ -129,8 +129,9 @@ DescisionPipeline::DescisionPipeline(InputStruct const *input) : csvMan(CSVManag
 {
     // create <map> from students
     this->studPriorizing = {};
-    for (std::string studName : input->studSelection)
+    for (auto stud : input->studSelection)
     {
+        std::string studName = stud.first;
         // does given student exist?
         if (csvMan.getStudent(studName) != nullptr)
             this->studPriorizing.insert({studName, 0});
