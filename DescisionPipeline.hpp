@@ -18,6 +18,7 @@ private:
     uint8_t getMaxPriorizing();
     void removeLessPriorizedThen(uint8_t priorizeValue);
     void removeLeastPriorized();
+    std::string getRandomStudent();
 
     void rulePreferredPoints(uint8_t preferredPoints);
     void rulePriorizeCorrectSemGroup(std::string semGroup, uint8_t priorityValue);
@@ -26,4 +27,5 @@ private:
 
 public:
     DescisionPipeline(InputStruct const *input);
+    Student *decideForStudent();
 };

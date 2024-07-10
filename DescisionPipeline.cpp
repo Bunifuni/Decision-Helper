@@ -3,6 +3,7 @@
 #include <limits>
 #include <algorithm>
 #include <iterator>
+#include <random>
 #include "DescisionPipeline.hpp"
 
 /**
@@ -75,7 +76,7 @@ uint8_t DescisionPipeline::getMaxPriorizing()
 /**
  * @brief Removes all students from map for student priorizing, whose priorize value is less than
  * <priorizeValue>.
- * 
+ *
  * @param priorizeValue Threshold value
  */
 void DescisionPipeline::removeLessPriorizedThen(uint8_t priorizeValue)
@@ -88,11 +89,26 @@ void DescisionPipeline::removeLessPriorizedThen(uint8_t priorizeValue)
 }
 /**
  * @brief Reduces map for student priorizing to students with highest priorize value
- * 
+ *
  */
 void DescisionPipeline::removeLeastPriorized()
 {
     removeLessPriorizedThen(getMaxPriorizing());
+}
+/**
+ * @brief Returns the name of a random student in the priorizing collection
+ *
+ * @return std::string
+ */
+std::string DescisionPipeline::getRandomStudent()
+{
+    int randInt = std::rand() % studPriorizing.size();
+    std::map<std::string, uint8_t>::iterator it = studPriorizing.begin();
+    for (int i = 0; i < randInt; i++)
+    {
+        it++;
+    }
+    return it->first;
 }
 
 /**
@@ -219,4 +235,26 @@ DescisionPipeline::DescisionPipeline(InputStruct const *input) : csvMan(CSVManag
                 std::cout << "Student \"" << studName << "\" existiert nicht." << std::endl;
         }
     }
+}
+
+Student *DescisionPipeline::decideForStudent()
+{
+    // First elimination phase
+    rulePreferredPoints(input->preferredPoints);
+
+    // Prioritization phase
+    if (input->semGroup != "")
+    {
+        rulePriorizeCorrectSemGroup(input->semGroup, input->priorityCorrectSemGroup);
+        rulePriorizeRepeaters(input->semGroup, input->priorityRepeater);
+    }
+
+    // Second elimination phase
+    removeLeastPriorized();
+    ruleFurthestInFront();
+
+    // Final Decision
+    if (studPriorizing.size() > 1)
+        return csvMan.getStudent(getRandomStudent());        // random descision if more than 1 students now
+    return csvMan.getStudent(studPriorizing.begin()->first); // return only student in map
 }
