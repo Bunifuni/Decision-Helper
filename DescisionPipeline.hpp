@@ -11,7 +11,7 @@ class DescisionPipeline
 private:
     CSVManager csvMan;
     InputStruct const *input;
-    std::map<std::string, uint8_t> studPriorizing; // Map students on points
+    std::map<std::string, uint8_t> studPriorizing; // Map students on a 'priorize value'
 
     std::set<std::string> closestLEQPointsStudents(uint8_t leqPoints, std::map<std::string, uint8_t> studs);
     std::set<std::string> closestGEQPointsStudents(uint8_t geqPoints, std::map<std::string, uint8_t> studs);
