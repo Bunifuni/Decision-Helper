@@ -401,5 +401,6 @@ TEST_F(DescisionPipelineTest, removeLeastPriorizedAssertions)
     // execute and assertion
     removeLeastPriorized(pipe1);
     ASSERT_EQ(getRemainingSelectionSize(pipe1), checkMap.size());
+    ASSERT_NE(getRemainingSelectionSize(pipe1), 0);
     ASSERT_EQ(getPriorizingMap(pipe1), checkMap);
 }
