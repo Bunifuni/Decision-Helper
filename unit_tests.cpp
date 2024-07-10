@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <filesystem>
+#include <random>
 #include "Student.hpp"
 #include "CSVManager.hpp"
 #include "InputStruct.hpp"
@@ -121,6 +122,10 @@ protected:
     {
         pipe->ruleFurthestInFront();
     }
+    void removeLeastPriorized(DescisionPipeline *pipe)
+    {
+        pipe->removeLeastPriorized();
+    }
 
     // Map Count
     int getRemainingSelectionSize(DescisionPipeline *pipe)
@@ -131,6 +136,16 @@ protected:
     uint8_t getPriorizing(std::string studName, DescisionPipeline *pipe)
     {
         return pipe->studPriorizing.at(studName);
+    }
+    // set priorizing map
+    void setPriorizingMap(std::map<std::string, uint8_t> priorizeMap, DescisionPipeline *pipe)
+    {
+        pipe->studPriorizing = priorizeMap;
+    }
+    // get priorizing map
+    std::map<std::string, uint8_t> getPriorizingMap(DescisionPipeline *pipe)
+    {
+        return pipe->studPriorizing;
     }
 };
 /***********************************************************************************/
@@ -366,4 +381,25 @@ TEST_F(DescisionPipelineTest, ruleFurthestInFrontAssertions)
     pipe = new DescisionPipeline(input1);
     ruleFurthestInFront(pipe);
     ASSERT_EQ(getRemainingSelectionSize(pipe), 1); // = size_of {"JSubjekt"}
+}
+// Testing removeLeastPriorized
+TEST_F(DescisionPipelineTest, removeLeastPriorizedAssertions)
+{
+    uint8_t MAX_VALUE = (uint8_t)std::rand();
+    std::map<std::string, uint8_t> testMap;
+    std::map<std::string, uint8_t> checkMap;
+    // fill testMap
+    for (int i = 0; i < 100; i++)
+    {
+        uint8_t randInt = (uint8_t)(std::rand() % MAX_VALUE + 1);
+        testMap.insert({std::to_string(i), randInt});
+        if (randInt == MAX_VALUE) // if MAX_VALUE fill also in checkMap for later assertion
+            checkMap.insert({std::to_string(i), randInt});
+    }
+    setPriorizingMap(testMap, pipe1);
+
+    // execute and assertion
+    removeLeastPriorized(pipe1);
+    ASSERT_EQ(getRemainingSelectionSize(pipe1), checkMap.size());
+    ASSERT_EQ(getPriorizingMap(pipe1), checkMap);
 }
