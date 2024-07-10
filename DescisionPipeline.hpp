@@ -15,6 +15,9 @@ private:
 
     std::set<std::string> closestLEQPointsStudents(uint8_t leqPoints, std::map<std::string, uint8_t> studs);
     std::set<std::string> closestGEQPointsStudents(uint8_t geqPoints, std::map<std::string, uint8_t> studs);
+    uint8_t getMaxPriorizing();
+    void removeLessPriorizedThen(uint8_t priorizeValue);
+    void removeLeastPriorized();
 
     void rulePreferredPoints(uint8_t preferredPoints);
     void rulePriorizeCorrectSemGroup(std::string semGroup, uint8_t priorityValue);

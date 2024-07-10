@@ -57,6 +57,43 @@ std::set<std::string> DescisionPipeline::closestGEQPointsStudents(uint8_t geqPoi
         return closestStuds;
     }
 }
+/**
+ * @brief Returns maximal priorize value in map for student priorizing.
+ *
+ * @return uint8_t
+ */
+uint8_t DescisionPipeline::getMaxPriorizing()
+{
+    uint8_t max = 0;
+    for (auto stud : studPriorizing)
+    {
+        if (stud.second > max)
+            max = stud.second;
+    }
+    return max;
+}
+/**
+ * @brief Removes all students from map for student priorizing, whose priorize value is less than
+ * <priorizeValue>.
+ * 
+ * @param priorizeValue Threshold value
+ */
+void DescisionPipeline::removeLessPriorizedThen(uint8_t priorizeValue)
+{
+    for (auto stud : studPriorizing)
+    {
+        if (stud.second < priorizeValue)
+            studPriorizing.erase(stud.first);
+    }
+}
+/**
+ * @brief Reduces map for student priorizing to students with highest priorize value
+ * 
+ */
+void DescisionPipeline::removeLeastPriorized()
+{
+    removeLessPriorizedThen(getMaxPriorizing());
+}
 
 /**
  * @brief Eliminates all students from selection, whose difference to the preferred score is too high
