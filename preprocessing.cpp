@@ -1,6 +1,7 @@
 #include <getopt.h>
 #include <iostream>
 #include <string>
+#include <cstring>
 #include "preprocessing.hpp"
 #include "InputStruct.hpp"
 
@@ -136,7 +137,7 @@ InputStruct *processOpts(int argc, char *argv[])
     input->studSelection = processSelectionStr(selectionStr);
 
     // check if selection is valid
-    if (input->studSelection.empty()) 
+    if (input->studSelection.empty())
     {
         std::cout << "Selection argument is not valid. It has to be \n 1 student:\t<studentName>";
         if (seatingRow_check)
@@ -157,4 +158,28 @@ InputStruct *processOpts(int argc, char *argv[])
 std::map<int, std::set<std::string>> processSelectionStr(std::string selectionStr)
 {
     return std::map<int, std::set<std::string>>();
+}
+
+/**
+ * @brief Separates given line by given delimiter and returns list of separated strings
+ *
+ * @param line string to separate
+ * @param delimiter delimiter to separate by
+ * @return vector<string>
+ */
+std::vector<std::string> separateLine(char *line, const char *delimiter)
+{
+    std::vector<std::string> words;        // vector to collect strings
+    char *token = strtok(line, delimiter); // char* until delimiter
+    while (token != nullptr)
+    {
+        std::string str = token; // string instead of char* for string methods (string cannot be nullptr)
+        if (str.back() == '\n')  // does str end with newline(LF)?
+        {
+            str.pop_back(); // remove newline
+        }
+        words.push_back(str);               // add word to list
+        token = strtok(nullptr, delimiter); // next word
+    }
+    return words;
 }

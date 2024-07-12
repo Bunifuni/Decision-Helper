@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <vector>
 
 using namespace std;
 
@@ -23,4 +22,3 @@ public:
     void incrementPoints();
     void decrementPoints();
 };
-vector<string> separateLine(char *line, const char *delimiter);

@@ -1,6 +1,7 @@
 #pragma once
 #include <set>
 #include <string>
+#include <vector>
 #include "InputStruct.hpp"
 
 /**
@@ -27,3 +28,4 @@ const std::set<std::string> decreaseArgs = {"sub", "--"};
 int preprocesssing(int argc, char *argv[]);
 InputStruct *processOpts(int argc, char *argv[]);
 std::map<int, std::set<std::string>> processSelectionStr(std::string selectionStr);
+std::vector<std::string> separateLine(char *line, const char *delimiter);

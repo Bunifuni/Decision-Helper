@@ -27,7 +27,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 # Add the test executable
-add_executable(test_cases unit_tests.cpp Student.cpp CSVManager.cpp DescisionPipeline.cpp)
+add_executable(test_cases unit_tests.cpp preprocessing.cpp Student.cpp CSVManager.cpp DescisionPipeline.cpp)
 
 target_link_libraries(
   test_cases

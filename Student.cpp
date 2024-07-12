@@ -1,6 +1,6 @@
 #include <iostream>
-#include <cstring>
 #include "Student.hpp"
+#include "preprocessing.hpp"
 
 using namespace std;
 
@@ -79,28 +79,4 @@ void Student::decrementPoints()
     {
         std::cout << "Warning: student " << this->name << " has no points to lose (already 0 points)" << std::endl;
     }
-}
-
-/**
- * @brief Separates given line by given delimiter and returns list of separated strings
- *
- * @param line string to separate
- * @param delimiter delimiter to separate by
- * @return vector<string>
- */
-vector<string> separateLine(char *line, const char *delimiter)
-{
-    vector<string> words;                  // vector to collect strings
-    char *token = strtok(line, delimiter); // char* until delimiter
-    while (token != nullptr)
-    {
-        string str = token;     // string instead of char* for string methods (string cannot be nullptr)
-        if (str.back() == '\n') // does str end with newline(LF)?
-        {
-            str.pop_back(); // remove newline
-        }
-        words.push_back(str);               // add word to list
-        token = strtok(nullptr, delimiter); // next word
-    }
-    return words;
 }
