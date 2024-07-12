@@ -1,5 +1,7 @@
 #pragma once
 #include <set>
+#include <string>
+#include "InputStruct.hpp"
 
 /**
  * @brief Enumeration to distinguish the result of the preprocessing.
@@ -15,11 +17,13 @@ enum processingResult
 /**
  * @brief Aliases for increasing argument
  */
-const std::set<const char *> increaseArgs = {"add", "++"};
+const std::set<std::string> increaseArgs = {"add", "++"};
 
 /**
  * @brief Aliases for decreasing argument
  */
-const std::set<const char *> decreaseArgs = {"sub", "--"};
+const std::set<std::string> decreaseArgs = {"sub", "--"};
 
 int preprocesssing(int argc, char *argv[]);
+InputStruct *processOpts(int argc, char *argv[]);
+std::map<int, std::set<std::string>> processSelectionStr(std::string selectionStr);
