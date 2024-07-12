@@ -8,6 +8,7 @@ struct InputStruct {
     std::string csvFile = CSVFILE;
     
     bool verbose = false;
+    bool help = false;
     uint8_t preferredPoints = 0;
     uint8_t priorityCorrectSemGroup = 2;
     uint8_t priorityRepeater = 1;
