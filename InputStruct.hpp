@@ -1,12 +1,14 @@
 #pragma once
 #include <vector>
+#include <map>
 #include <string>
 
 #define CSVFILE "students.csv"
 
-struct InputStruct {
+struct InputStruct
+{
     std::string csvFile = CSVFILE;
-    
+
     bool verbose = false;
     bool help = false;
     uint8_t preferredPoints = 0;
