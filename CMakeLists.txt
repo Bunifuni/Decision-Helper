@@ -7,7 +7,7 @@ enable_testing()
 cmake_policy(SET CMP0135 NEW)
 
 # Add the main executable
-add_executable(Descision-Helper main.cpp Student.cpp CSVManager.cpp DescisionPipeline.cpp)
+add_executable(Descision-Helper main.cpp preprocessing.cpp Student.cpp CSVManager.cpp DescisionPipeline.cpp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
