@@ -421,7 +421,7 @@ TEST_F(DescisionPipelineTest, DecideForStudentAssertions)
     studName = pipe1->decideForStudent()->getName();
     ASSERT_EQ(studName, "CSchmidt");
 
-    input1->preferredPoints = 1;         // prefer no points
+    input1->preferredPoints = 1;         // prefer 1 point
     input1->priorityCorrectSemGroup = 2; // prefer correct sem
     input1->priorityRepeater = 1;        // prefer repeaters not as much as correct sem
     input1->semGroup = "22INB-2";
@@ -430,7 +430,33 @@ TEST_F(DescisionPipelineTest, DecideForStudentAssertions)
         {0, {"KReide", "FMeier"}},
         {1, {"JSubjekt", "RSalze"}},
         {2, {"MMuster"}}};
-    DescisionPipeline *pipe1 = new DescisionPipeline(input1);
+    pipe1 = new DescisionPipeline(input1);
     studName = pipe1->decideForStudent()->getName();
     ASSERT_EQ((studName == "JSubjekt") || (studName == "RSalze"), true);
+
+    input1->preferredPoints = 1;         // prefer 1 points
+    input1->priorityCorrectSemGroup = 2; // prefer correct sem
+    input1->priorityRepeater = 0;        // prefer repeaters as much as incorrect sem
+    input1->semGroup = "22INB-2";
+    // seating row important
+    input1->studSelection = {
+        {0, {"KReide", "FMeier"}},
+        {1, {"JSubjekt", "RSalze"}},
+        {2, {"MMuster"}}};
+    pipe1 = new DescisionPipeline(input1);
+    studName = pipe1->decideForStudent()->getName();
+    ASSERT_EQ((studName == "JSubjekt") || (studName == "RSalze"), true);
+
+    input1->preferredPoints = 1;         // prefer 1 points
+    input1->priorityCorrectSemGroup = 2; // prefer correct sem
+    input1->priorityRepeater = 1;        // prefer repeaters more than incorrect sem
+    input1->semGroup = "22INB-1";
+    // seating row important
+    input1->studSelection = {
+        {0, {"KReide", "FMeier"}},
+        {1, {"JSubjekt", "RSalze"}},
+        {2, {"MMuster"}}};
+    pipe1 = new DescisionPipeline(input1);
+    studName = pipe1->decideForStudent()->getName();
+    ASSERT_EQ(studName, "MMuster");
 }
