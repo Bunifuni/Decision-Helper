@@ -29,7 +29,7 @@ void printHelpHint()
     puts("To display help, use the -h or --help flag.");
 }
 
-int preprocesssing(int argc, char *argv[])
+int preprocesssing(int argc, char *argv[], InputStruct *input)
 {
     processingResult result = unhandled;
     // check for arguments
@@ -37,7 +37,7 @@ int preprocesssing(int argc, char *argv[])
     {
         // check for command argument
         std::string command = argv[1];
-        processOpts(argc, argv);
+        processOpts(argc, argv, input);
 
         if (command == "cmd1")
             result = decision;
@@ -64,6 +64,15 @@ int preprocesssing(int argc, char *argv[])
     return result;
 }
 
+/**
+ * @brief Processes options of program-call. Returns 0 when succeed with no complication. 
+ * Returns -1 otherwise. Changes properties of InputStruct based on options.
+ * 
+ * @param argc argument count
+ * @param argv argument vector
+ * @param input InputStruct to encapsulate the result
+ * @return int 
+ */
 int processOpts(int argc, char *argv[], InputStruct *input)
 {
     const char *const short_opts = "f:g:s:hrv";
