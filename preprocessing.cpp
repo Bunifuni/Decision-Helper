@@ -31,7 +31,6 @@ void printHelpHint()
 
 int preprocessing(int argc, char *argv[], InputStruct *input)
 {
-    processingResult result = unhandled;
     // check for arguments
     if (argc > 1)
     {
@@ -40,28 +39,28 @@ int preprocessing(int argc, char *argv[], InputStruct *input)
         processOpts(argc, argv, input);
 
         if (command == "cmd1")
-            result = decision;
+            input->state = decision;
         else if (increaseArgs.find(command) != increaseArgs.end())
-            result = increment;
+            input->state = increment;
         else if (decreaseArgs.find(command) != decreaseArgs.end())
-            result = decrement;
+            input->state = decrement;
         else
         {
             std::cout << "unknown command: \"" << command << "\"\n";
-            result = error;
+            input->state = error;
         }
     }
     else
     {
         puts("missing command");
-        result = error;
+        input->state = error;
     }
     // print hint for help when errors occured
-    if (result == error)
+    if (input->state == error)
     {
         printHelpHint();
     }
-    return result;
+    return input->state;
 }
 
 /**
