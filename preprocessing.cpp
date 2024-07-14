@@ -34,9 +34,12 @@ int preprocessing(int argc, char *argv[], InputStruct *input)
     // check for arguments
     if (argc > 1)
     {
-        // check for command argument
+        // check for command argument; has to be stored before getopt_long in processOpts is called
         std::string command = argv[1];
-        processOpts(argc, argv, input);
+
+        // check for errors
+        if (processOpts(argc, argv, input) == -1)
+            return -1;
 
         if (command == "cmd1")
             input->state = decision;
@@ -60,7 +63,7 @@ int preprocessing(int argc, char *argv[], InputStruct *input)
     {
         printHelpHint();
     }
-    return input->state;
+    return 0;
 }
 
 /**
