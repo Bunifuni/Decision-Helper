@@ -5,15 +5,25 @@
 #include "preprocessing.hpp"
 #include "InputStruct.hpp"
 
+#define STUDENT_SEPARATOR ","
+#define SEATINGROW_SEPARATOR ":"
+
 static uint8_t seatingRow_check = 0;
 
+/**
+ * @brief Prints the help-text in terminal. When this method is called, the program exits.
+ *
+ */
 void printHelp()
 {
     // TODO
     puts("Help");
     exit(1);
 }
-
+/**
+ * @brief Prints in terminal how to display the help-text.
+ * 
+ */
 void printHelpHint()
 {
     puts("To display help, use the -h or --help flag.");
@@ -74,7 +84,7 @@ InputStruct *processOpts(int argc, char *argv[])
     InputStruct *input = new InputStruct();
 
     int c;
-    std::string selectionStr;
+    char *selectionStr = nullptr;
     while (true)
     {
         int option_index = 0;
@@ -128,7 +138,7 @@ InputStruct *processOpts(int argc, char *argv[])
     }
 
     // check if selection is empty
-    if (selectionStr.empty())
+    if (selectionStr == nullptr)
     {
         puts("Selection of students is missing.");
         return nullptr;
@@ -155,9 +165,85 @@ InputStruct *processOpts(int argc, char *argv[])
     return input;
 }
 
-std::map<int, std::set<std::string>> processSelectionStr(std::string selectionStr)
+/**
+ * @brief Splits the words in the vector to <string, int> by the delimiter. Returns vector with splitted words.
+ *
+ * @param unsplitVector unsplitted vector
+ * @param delimiter delimiter to split by
+ * @return std::vector<std::string, int>
+ */
+std::vector<std::pair<std::string, int>> splitElements(std::vector<std::string> unsplitVector, const char *delimiter)
 {
-    return std::map<int, std::set<std::string>>();
+    std::vector<std::pair<std::string, int>> splitVector;
+    for (std::string unsplitWord : unsplitVector)
+    {
+        int delimiterPos = unsplitWord.find(delimiter); // get delimiter position
+        splitVector.push_back({
+            unsplitWord.substr(0, delimiterPos),                                                     // word before delimiter
+            std::stoi(unsplitWord.substr(delimiterPos + 1, unsplitWord.size() - (delimiterPos + 1))) // word after delimiter
+        });
+    }
+    return splitVector;
+}
+
+/**
+ * @brief Processes the given string of students. Returns map with students as set per row.
+ *
+ * @param selectionStr
+ * @return std::map<int, std::set<std::string>>
+ */
+std::map<int, std::set<std::string>> processSelectionStr(char *selectionStr)
+{
+    std::map<int, std::set<std::string>> selectionMap;
+    std::set<std::string> studsInRow;
+    std::vector<std::string> splitStuds = separateLine(selectionStr, STUDENT_SEPARATOR);
+
+    // check if seating row has to be considered
+    if (seatingRow_check)
+    {
+        auto splittedVector = splitElements(splitStuds, SEATINGROW_SEPARATOR); // split names from seating row
+        int row = 0;
+        // insert students row by row to map
+        while (splittedVector.empty() == false)
+        {
+            studsInRow.clear(); // clear set
+            // collect all students with current row in set
+            for (auto it = splittedVector.begin(); it < splittedVector.end();)
+            {
+                if (it->second == row)
+                {
+                    studsInRow.insert(it->first);
+                    it = splittedVector.erase(it); // erase element
+                }
+                else
+                {
+                    it++;
+                }
+            }
+            selectionMap.insert({row, studsInRow});
+            row++;
+        }
+    }
+    else
+    {
+        // seating row not considered
+        for (std::string studName : splitStuds)
+        {
+            studsInRow.insert(studName);
+        }
+        selectionMap.insert({0, studsInRow});
+    }
+
+    // TODO verbose
+    for (auto elem : selectionMap)
+    {
+        for (auto name : elem.second)
+        {
+            std::cout << elem.first << "\t" << name << std::endl;
+        }
+    }
+
+    return selectionMap;
 }
 
 /**

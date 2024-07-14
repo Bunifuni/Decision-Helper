@@ -27,5 +27,6 @@ const std::set<std::string> decreaseArgs = {"sub", "--"};
 
 int preprocesssing(int argc, char *argv[]);
 InputStruct *processOpts(int argc, char *argv[]);
-std::map<int, std::set<std::string>> processSelectionStr(std::string selectionStr);
+std::map<int, std::set<std::string>> processSelectionStr(char *selectionStr);
 std::vector<std::string> separateLine(char *line, const char *delimiter);
+std::vector<std::pair<std::string, int>> splitElements(std::vector<std::string> unsplitVector,  const char *delimiter);
