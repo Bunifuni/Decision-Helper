@@ -15,6 +15,12 @@ enum processingResult
     increment,
     decrement
 };
+
+/**
+ * @brief Aliases for deciding argument
+ */
+const std::set<std::string> decideArgAliases = {"decide"};
+
 /**
  * @brief Aliases for increasing argument
  */

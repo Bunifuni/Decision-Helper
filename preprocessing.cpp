@@ -42,7 +42,7 @@ int preprocessing(int argc, char *argv[], InputStruct *input)
             return -1;
 
         // distinguish command
-        if (command == "cmd1") // decide for student
+        if (decideArgAliases.find(command) != decideArgAliases.end()) // decide for student
             input->state = decision;
         else if (increaseArgAliases.find(command) != increaseArgAliases.end()) // increment students points
             input->state = increment;
