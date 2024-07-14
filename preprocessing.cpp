@@ -41,11 +41,12 @@ int preprocessing(int argc, char *argv[], InputStruct *input)
         if (processOpts(argc, argv, input) == -1)
             return -1;
 
-        if (command == "cmd1")
+        // distinguish command
+        if (command == "cmd1") // decide for student
             input->state = decision;
-        else if (increaseArgs.find(command) != increaseArgs.end())
+        else if (increaseArgs.find(command) != increaseArgs.end()) // increment students points
             input->state = increment;
-        else if (decreaseArgs.find(command) != decreaseArgs.end())
+        else if (decreaseArgs.find(command) != decreaseArgs.end()) // decrement students points
             input->state = decrement;
         else
         {
@@ -67,13 +68,13 @@ int preprocessing(int argc, char *argv[], InputStruct *input)
 }
 
 /**
- * @brief Processes options of program-call. Returns 0 when succeed with no complication. 
+ * @brief Processes options of program-call. Returns 0 when succeed with no complication.
  * Returns -1 otherwise. Changes properties of InputStruct based on options.
- * 
+ *
  * @param argc argument count
  * @param argv argument vector
  * @param input InputStruct to encapsulate the result
- * @return int 
+ * @return int
  */
 int processOpts(int argc, char *argv[], InputStruct *input)
 {
