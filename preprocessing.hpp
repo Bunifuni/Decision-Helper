@@ -9,7 +9,6 @@
  */
 enum processingResult
 {
-    error,
     unhandled,
     decision,
     increment,
