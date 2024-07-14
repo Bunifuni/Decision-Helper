@@ -25,7 +25,7 @@ const std::set<std::string> increaseArgs = {"add", "++"};
  */
 const std::set<std::string> decreaseArgs = {"sub", "--"};
 
-int preprocesssing(int argc, char *argv[]);
+int preprocessing(int argc, char *argv[]);
 int processOpts(int argc, char *argv[], InputStruct *input);
 std::map<int, std::set<std::string>> processSelectionStr(char *selectionStr);
 std::vector<std::string> separateLine(char *line, const char *delimiter);

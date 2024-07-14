@@ -29,7 +29,7 @@ void printHelpHint()
     puts("To display help, use the -h or --help flag.");
 }
 
-int preprocesssing(int argc, char *argv[], InputStruct *input)
+int preprocessing(int argc, char *argv[], InputStruct *input)
 {
     processingResult result = unhandled;
     // check for arguments
