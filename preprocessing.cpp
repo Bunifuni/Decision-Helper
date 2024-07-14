@@ -31,6 +31,7 @@ void printHelpHint()
 
 int preprocessing(int argc, char *argv[], InputStruct *input)
 {
+    int errorOccured = 0;
     // check for arguments
     if (argc > 1)
     {
@@ -38,8 +39,7 @@ int preprocessing(int argc, char *argv[], InputStruct *input)
         std::string command = argv[1];
 
         // check for errors
-        if (processOpts(argc, argv, input) == -1)
-            return -1;
+        errorOccured = processOpts(argc, argv, input);
 
         // distinguish command
         if (decideArgAliases.find(command) != decideArgAliases.end()) // decide for student
@@ -51,18 +51,19 @@ int preprocessing(int argc, char *argv[], InputStruct *input)
         else
         {
             std::cout << "unknown command: \"" << command << "\"\n";
-            input->state = error;
+            errorOccured = -1;
         }
     }
     else
     {
         puts("missing command");
-        input->state = error;
+        errorOccured = -1;
     }
     // print hint for help when errors occured
-    if (input->state == error)
+    if (errorOccured == -1)
     {
         printHelpHint();
+        return -1;
     }
     return 0;
 }
@@ -151,7 +152,6 @@ int processOpts(int argc, char *argv[], InputStruct *input)
     if (selectionStr == nullptr)
     {
         puts("Selection of students is missing.");
-        input->state = error;
         return -1;
     }
 
@@ -170,7 +170,6 @@ int processOpts(int argc, char *argv[], InputStruct *input)
         if (seatingRow_check)
             std::cout << ":<seatingRow>";
         std::cout << ",...\n";
-        input->state = error;
         return -1;
     }
 
