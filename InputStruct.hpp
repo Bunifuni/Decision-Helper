@@ -2,12 +2,14 @@
 #include <vector>
 #include <map>
 #include <string>
+#include "preprocessing.hpp"
 
 #define CSVFILE "students.csv"
 
 struct InputStruct
 {
     std::string csvFile = CSVFILE;
+    processingResult state = unhandled;
 
     bool verbose = false;
     uint8_t preferredPoints = 0;

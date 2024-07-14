@@ -22,7 +22,7 @@ void printHelp()
 }
 /**
  * @brief Prints in terminal how to display the help-text.
- * 
+ *
  */
 void printHelpHint()
 {
@@ -64,7 +64,7 @@ int preprocesssing(int argc, char *argv[])
     return result;
 }
 
-InputStruct *processOpts(int argc, char *argv[])
+int processOpts(int argc, char *argv[], InputStruct *input)
 {
     const char *const short_opts = "f:g:s:hrv";
     const option long_opts[] = {
@@ -80,8 +80,6 @@ InputStruct *processOpts(int argc, char *argv[])
         {"row", no_argument, nullptr, 'r'},
         {"verbose", no_argument, nullptr, 'v'},
         {0, 0, 0, 0}};
-
-    InputStruct *input = new InputStruct();
 
     int c;
     char *selectionStr = nullptr;
@@ -141,10 +139,11 @@ InputStruct *processOpts(int argc, char *argv[])
     if (selectionStr == nullptr)
     {
         puts("Selection of students is missing.");
-        return nullptr;
+        input->state = error;
+        return -1;
     }
 
-    input->studSelection = processSelectionStr(selectionStr);
+    input->studSelection = processSelectionStr(selectionStr); // process selection of students
 
     // check if selection is valid
     if (input->studSelection.empty())
@@ -159,10 +158,11 @@ InputStruct *processOpts(int argc, char *argv[])
         if (seatingRow_check)
             std::cout << ":<seatingRow>";
         std::cout << ",...\n";
-        return nullptr;
+        input->state = error;
+        return -1;
     }
 
-    return input;
+    return 0;
 }
 
 /**
