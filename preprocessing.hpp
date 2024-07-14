@@ -18,12 +18,12 @@ enum processingResult
 /**
  * @brief Aliases for increasing argument
  */
-const std::set<std::string> increaseArgs = {"add", "++"};
+const std::set<std::string> increaseArgAliases = {"add", "++"};
 
 /**
  * @brief Aliases for decreasing argument
  */
-const std::set<std::string> decreaseArgs = {"sub", "--"};
+const std::set<std::string> decreaseArgAliases = {"sub", "--"};
 
 int preprocessing(int argc, char *argv[], InputStruct *input);
 int processOpts(int argc, char *argv[], InputStruct *input);

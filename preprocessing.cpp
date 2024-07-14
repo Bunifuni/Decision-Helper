@@ -44,9 +44,9 @@ int preprocessing(int argc, char *argv[], InputStruct *input)
         // distinguish command
         if (command == "cmd1") // decide for student
             input->state = decision;
-        else if (increaseArgs.find(command) != increaseArgs.end()) // increment students points
+        else if (increaseArgAliases.find(command) != increaseArgAliases.end()) // increment students points
             input->state = increment;
-        else if (decreaseArgs.find(command) != decreaseArgs.end()) // decrement students points
+        else if (decreaseArgAliases.find(command) != decreaseArgAliases.end()) // decrement students points
             input->state = decrement;
         else
         {
