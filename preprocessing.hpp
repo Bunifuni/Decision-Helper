@@ -5,17 +5,6 @@
 #include "InputStruct.hpp"
 
 /**
- * @brief Enumeration to distinguish the result of the preprocessing.
- */
-enum processingResult
-{
-    unhandled,
-    decision,
-    increment,
-    decrement
-};
-
-/**
  * @brief Aliases for deciding argument
  */
 const std::set<std::string> decideArgAliases = {"decide"};

@@ -2,14 +2,24 @@
 #include <vector>
 #include <map>
 #include <string>
-#include "preprocessing.hpp"
 
 #define CSVFILE "students.csv"
+
+/**
+ * @brief Enumeration to distinguish the result of the preprocessing.
+ */
+enum ProcessingResult
+{
+    unhandled,
+    decision,
+    increment,
+    decrement
+};
 
 struct InputStruct
 {
     std::string csvFile = CSVFILE;
-    processingResult state = unhandled;
+    ProcessingResult state = unhandled;
 
     bool verbose = false;
     uint8_t preferredPoints = 0;
