@@ -16,6 +16,10 @@ enum ProgramCommand
     decrement
 };
 
+/**
+ * @brief Struct which holds the necessary information from preprocessing of thee input.
+ * 
+ */
 struct InputStruct
 {
     std::string csvFile = CSVFILE;
