@@ -6,9 +6,9 @@
 #define CSVFILE "students.csv"
 
 /**
- * @brief Enumeration to distinguish the result of the preprocessing.
+ * @brief Enumeration to distinguish the command for the program.
  */
-enum ProcessingResult
+enum ProgramCommand
 {
     unhandled,
     decision,
@@ -19,7 +19,7 @@ enum ProcessingResult
 struct InputStruct
 {
     std::string csvFile = CSVFILE;
-    ProcessingResult state = unhandled;
+    ProgramCommand state = unhandled;
 
     bool verbose = false;
     uint8_t preferredPoints = 0;
