@@ -111,31 +111,31 @@ int processOpts(int argc, char *argv[], InputStruct *input)
         case 0:
             break;
 
-        case 'f':
+        case 'f': // file
             // printf("option -f with value `%s'\n", optarg);
             input->csvFile = optarg;
             break;
 
-        case 'g':
+        case 'g': // seminar-group
             // printf("option -g with value `%s'\n", optarg);
             input->semGroup = optarg;
             break;
 
-        case 's':
+        case 's': // selection e.g. students
             // printf("option -s with value `%s'\n", optarg);
             selectionStr = optarg;
             break;
 
-        case 'h':
+        case 'h': // help
             // puts("option -h\n");
             printHelp();
             break;
 
-        case 'r':
+        case 'r': // (consider) row
             // puts("option -r\n");
             seatingRow_check = (uint8_t)1;
             break;
-        case 'v':
+        case 'v': // verbose
             // puts("option -v\n");
             input->verbose = true;
             break;
