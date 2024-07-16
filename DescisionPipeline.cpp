@@ -155,6 +155,8 @@ void DescisionPipeline::rulePriorizeCorrectSemGroup(std::string semGroup, uint8_
         if (this->csvMan.getStudent(studName)->getSemGroup() == semGroup)
         {
             this->studPriorizing.at(studName) += priorityValue; // increase priority
+            if (input->verbose)                                 // verbose output
+                std::cout << studName << " is in correct seminar\t- priorize by " << to_string(priorityValue) << std::endl;
         }
     }
 }
@@ -222,7 +224,7 @@ void DescisionPipeline::ruleFurthestInFront()
 
 /**
  * @brief Construct a new Descision Pipeline:: Descision Pipeline object
- * 
+ *
  * @param input InputStruct holding the input information
  */
 DescisionPipeline::DescisionPipeline(InputStruct const *input) : csvMan(CSVManager(input->csvFile)), input(input)
@@ -243,10 +245,10 @@ DescisionPipeline::DescisionPipeline(InputStruct const *input) : csvMan(CSVManag
 }
 
 /**
- * @brief Returns pointer to student object. Decides for one student by going through 3 phases of 
+ * @brief Returns pointer to student object. Decides for one student by going through 3 phases of
  * decisions. If there are several students left in the selection at the end, one is chosen at random.
- * 
- * @return Student* 
+ *
+ * @return Student*
  */
 Student *DescisionPipeline::decideForStudent()
 {
