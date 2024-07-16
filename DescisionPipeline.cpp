@@ -176,13 +176,27 @@ void DescisionPipeline::rulePreferredPoints(uint8_t preferredPoints)
         remainingStuds = closestGEQPointsStudents(preferredPoints + 1, this->studPriorizing);
     }
     // Discard students from map that are not remaining students
+    std::string discardedStuds;
     for (auto it = this->studPriorizing.begin(); it != this->studPriorizing.end();)
     {
         std::string studName = it->first;
         if (remainingStuds.find(studName) == remainingStuds.end()) // if studName not exists in remainStuds
-            it = this->studPriorizing.erase(it);                   // iterator points to position after erased element
+        {
+            if (input->verbose)
+                discardedStuds.append(it->first + ", ");
+            it = this->studPriorizing.erase(it); // iterator points to position after erased element
+        }
         else
             it++;
+    }
+    if (input->verbose)
+    {
+        if (!discardedStuds.empty())
+        {
+            discardedStuds.pop_back(); // remove ' '
+            discardedStuds.pop_back(); // remove ','
+        }
+        std::cout << "Discarding all other students of selection\t" << discardedStuds << "\n";
     }
 }
 /**
