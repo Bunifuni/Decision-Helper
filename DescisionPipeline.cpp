@@ -213,7 +213,7 @@ void DescisionPipeline::rulePreferredPoints(uint8_t preferredPoints)
             discardedStuds.pop_back(); // remove ' '
             discardedStuds.pop_back(); // remove ','
         }
-        std::cout << "Discarding all other students of selection\t" << discardedStuds << "\n";
+        std::cout << "Discarding all other students of selection\n\t" << discardedStuds << "\n";
     }
 }
 /**
@@ -332,27 +332,27 @@ Student *DescisionPipeline::decideForStudent()
 {
     // First elimination phase
     if (input->verbose)
-        puts("\n--------------- First sorting out ------------------");
+        puts("\n----------------- First sorting out --------------------");
     rulePreferredPoints(input->preferredPoints);
 
     // Prioritization phase
     if (input->semGroup != "")
     {
         if (input->verbose)
-            puts("\n--------------- Prioritization phase ---------------");
+            puts("\n----------------- Prioritization phase -----------------");
         rulePriorizeCorrectSemGroup(input->semGroup, input->priorityCorrectSemGroup);
         rulePriorizeRepeaters(input->semGroup, input->priorityRepeater);
     }
 
     // Second elimination phase
     if (input->verbose)
-        puts("\n--------------- Second sorting out -----------------");
+        puts("\n----------------- Second sorting out -------------------");
     removeLeastPriorized();
     ruleFurthestInFront();
 
     // Final Decision
     if (input->verbose)
-        puts("\n--------------- Final decision phase ---------------");
+        puts("\n----------------- Final decision phase -----------------");
     if (studPriorizing.size() > 1)
         return csvMan.getStudent(getRandomStudent());        // random descision if more than 1 students now
     return csvMan.getStudent(studPriorizing.begin()->first); // return only student in map
