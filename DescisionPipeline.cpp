@@ -40,10 +40,7 @@ std::set<std::string> DescisionPipeline::closestLEQPointsStudents(uint8_t leqPoi
             std::cout << "\t- found:\n";
             listStrings(closestStuds);
         }
-        else
-        {
-            std::cout << "\n";
-        }
+
         return closestStuds;
     }
 }
@@ -79,10 +76,7 @@ std::set<std::string> DescisionPipeline::closestGEQPointsStudents(uint8_t geqPoi
             std::cout << "\t- found:\n";
             listStrings(closestStuds);
         }
-        else
-        {
-            std::cout << "\n";
-        }
+
         return closestStuds;
     }
 }
