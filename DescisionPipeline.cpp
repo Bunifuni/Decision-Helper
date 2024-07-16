@@ -137,7 +137,8 @@ void DescisionPipeline::removeLeastPriorized()
 {
     uint8_t maxPriorize = getMaxPriorizing();
     if (input->verbose)
-        std::cout << "Max priorize-value: " << to_string(maxPriorize) << std::endl;;
+        std::cout << "Max priorize-value: " << to_string(maxPriorize) << std::endl;
+    ;
     removeLessPriorizedThen(maxPriorize);
 }
 /**
@@ -348,7 +349,8 @@ Student *DescisionPipeline::decideForStudent()
     if (input->verbose)
         puts("\n----------------- Second sorting out -------------------");
     removeLeastPriorized();
-    ruleFurthestInFront();
+    if (input->studSelection.size() > 1) // more than 1 row
+        ruleFurthestInFront();
 
     // Final Decision
     if (input->verbose)
