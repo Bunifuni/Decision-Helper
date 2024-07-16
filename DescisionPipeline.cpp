@@ -289,15 +289,33 @@ void DescisionPipeline::ruleFurthestInFront()
         }
     }
 
+    if (input->verbose)
+    {
+        puts("\nStudents of selection that sit furthest in front:");
+        listStrings(priorizedStudsInRow);
+    }
+
     // discard all students not in priorizedStudsInRow (= studSelection - priorizedStudsInRow)
     std::set<std::string> discardStuds;
+    std::string discardedStr;
     std::set_difference(
         studSelection.begin(), studSelection.end(),
         priorizedStudsInRow.begin(), priorizedStudsInRow.end(),
         std::inserter(discardStuds, discardStuds.begin())); // Inserter for Not-Read-Only Iterator
     for (std::string studName : discardStuds)
     {
+        if (input->verbose)
+            discardedStr.append(studName + ", ");
         studPriorizing.erase(studName);
+    }
+    if (input->verbose)
+    {
+        if (!discardedStr.empty())
+        {
+            discardedStr.pop_back(); // remove ' '
+            discardedStr.pop_back(); // remove ','
+        }
+        std::cout << "Discarding all other students of selection\n\t" << discardedStr << "\n";
     }
 }
 
@@ -349,7 +367,8 @@ Student *DescisionPipeline::decideForStudent()
     if (input->verbose)
         puts("\n----------------- Second sorting out -------------------");
     removeLeastPriorized();
-    if (input->studSelection.size() > 1) // more than 1 row
+    // only if more than 1 row AND more than 1 stud remaining
+    if (input->studSelection.size() > 1 && studPriorizing.size() > 1)
         ruleFurthestInFront();
 
     // Final Decision
