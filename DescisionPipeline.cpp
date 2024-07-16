@@ -148,22 +148,6 @@ void DescisionPipeline::listStrings(std::set<std::string> const &listingSet)
     for (auto str : listingSet)
         std::cout << "\t" << str << std::endl;
 }
-/**
- * @brief Returns copy of given string padded to given num. When <str> is already bigger than num, 
- * nothing happens.
- * 
- * @param str string to pad
- * @param num size for string
- * @param paddingChar char to pad with
- * @return std::string 
- */
-std::string DescisionPipeline::padTo(std::string const &str, const size_t num, const char paddingChar = ' ')
-{
-    std::string padStr = str;
-    if (num > padStr.size())
-        padStr.insert(padStr.end(), num - padStr.size(), paddingChar);
-    return padStr;
-}
 
 /**
  * @brief Eliminates all students from selection, whose difference to the preferred score is too high
@@ -341,4 +325,21 @@ Student *DescisionPipeline::decideForStudent()
     if (studPriorizing.size() > 1)
         return csvMan.getStudent(getRandomStudent());        // random descision if more than 1 students now
     return csvMan.getStudent(studPriorizing.begin()->first); // return only student in map
+}
+
+/**
+ * @brief Returns copy of given string padded to given num. When <str> is already bigger than num,
+ * nothing happens.
+ *
+ * @param str string to pad
+ * @param num size for string
+ * @param paddingChar char to pad with
+ * @return std::string
+ */
+std::string padTo(std::string const &str, const size_t num, const char paddingChar)
+{
+    std::string padStr = str;
+    if (num > padStr.size())
+        padStr.insert(padStr.end(), num - padStr.size(), paddingChar);
+    return padStr;
 }
