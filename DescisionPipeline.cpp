@@ -109,10 +109,24 @@ uint8_t DescisionPipeline::getMaxPriorizing()
  */
 void DescisionPipeline::removeLessPriorizedThen(uint8_t priorizeValue)
 {
+    std::string discardStudents;
     for (auto stud : studPriorizing)
     {
         if (stud.second < priorizeValue)
+        {
+            if (input->verbose)
+                discardStudents.append(stud.first + ", ");
             studPriorizing.erase(stud.first);
+        }
+    }
+    if (input->verbose)
+    {
+        if (!discardStudents.empty())
+        {
+            discardStudents.pop_back(); // remove ' '
+            discardStudents.pop_back(); // remove ','
+        }
+        std::cout << "Discarding students with less than " << to_string(priorizeValue) << " priority\n\t" << discardStudents << "\n";
     }
 }
 /**
@@ -121,7 +135,10 @@ void DescisionPipeline::removeLessPriorizedThen(uint8_t priorizeValue)
  */
 void DescisionPipeline::removeLeastPriorized()
 {
-    removeLessPriorizedThen(getMaxPriorizing());
+    uint8_t maxPriorize = getMaxPriorizing();
+    if (input->verbose)
+        std::cout << "Max priorize-value: " << to_string(maxPriorize) << std::endl;;
+    removeLessPriorizedThen(maxPriorize);
 }
 /**
  * @brief Returns the name of a random student in the priorizing collection
