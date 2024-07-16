@@ -199,7 +199,7 @@ void DescisionPipeline::rulePriorizeCorrectSemGroup(std::string semGroup, uint8_
         {
             this->studPriorizing.at(studName) += priorityValue; // increase priority
             if (input->verbose)                                 // verbose output
-                std::cout << studName << " is in correct seminar\t- priorize by " << to_string(priorityValue) << std::endl;
+                std::cout << studName << "is in correct seminar\t- priorize by " << to_string(priorityValue) << std::endl;
         }
     }
 }
@@ -298,20 +298,28 @@ DescisionPipeline::DescisionPipeline(InputStruct const *input) : csvMan(CSVManag
 Student *DescisionPipeline::decideForStudent()
 {
     // First elimination phase
+    if (input->verbose)
+        puts("\n--------------- First sorting out ------------------");
     rulePreferredPoints(input->preferredPoints);
 
     // Prioritization phase
     if (input->semGroup != "")
     {
+        if (input->verbose)
+            puts("\n--------------- Prioritization phase ---------------");
         rulePriorizeCorrectSemGroup(input->semGroup, input->priorityCorrectSemGroup);
         rulePriorizeRepeaters(input->semGroup, input->priorityRepeater);
     }
 
     // Second elimination phase
+    if (input->verbose)
+        puts("\n--------------- Second sorting out -----------------");
     removeLeastPriorized();
     ruleFurthestInFront();
 
     // Final Decision
+    if (input->verbose)
+        puts("\n--------------- Final decision phase ---------------");
     if (studPriorizing.size() > 1)
         return csvMan.getStudent(getRandomStudent());        // random descision if more than 1 students now
     return csvMan.getStudent(studPriorizing.begin()->first); // return only student in map
