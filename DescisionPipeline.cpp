@@ -199,7 +199,7 @@ void DescisionPipeline::rulePriorizeCorrectSemGroup(std::string semGroup, uint8_
         {
             this->studPriorizing.at(studName) += priorityValue; // increase priority
             if (input->verbose)                                 // verbose output
-                std::cout << studName << "is in correct seminar\t- priorize by " << to_string(priorityValue) << std::endl;
+                std::cout << studName << "\tis in correct seminar\t- priorize by " << to_string(priorityValue) << std::endl;
         }
     }
 }
@@ -222,7 +222,7 @@ void DescisionPipeline::rulePriorizeRepeaters(std::string semGroup, uint8_t prio
         {
             this->studPriorizing.at(studName) += priorityValue; // increase priority
             if (input->verbose)                                 // verbose output
-                std::cout << studName << " seems to be repeater\t- priorize by " << to_string(priorityValue) << std::endl;
+                std::cout << studName << "\tseems to be repeater\t- priorize by " << to_string(priorityValue) << std::endl;
         }
     }
 }
@@ -284,7 +284,7 @@ DescisionPipeline::DescisionPipeline(InputStruct const *input) : csvMan(CSVManag
             if (csvMan.getStudent(studName) != nullptr)
                 this->studPriorizing.insert({studName, 0});
             else if (input->verbose)
-                std::cout << "Student \"" << studName << "\" existiert nicht." << std::endl;
+                std::cout << "Student \"" << studName << "\" does not exist." << std::endl;
         }
     }
 }
