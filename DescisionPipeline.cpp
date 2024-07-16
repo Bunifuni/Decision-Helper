@@ -326,6 +326,23 @@ void DescisionPipeline::ruleFurthestInFront()
  */
 DescisionPipeline::DescisionPipeline(InputStruct const *input) : csvMan(CSVManager(input->csvFile)), input(input)
 {
+    // verbose output when seating row is considered
+    if (input->verbose && input->studSelection.size() > 1)
+    {
+        std::cout << padTo("seating row", PADDING) << "| "
+                  << padTo("   name", PADDING - 1) << "\n"
+                  << padTo("", PADDING, '-') << "+" << padTo("", PADDING - 1, '-') << std::endl;
+
+        for (auto elem : input->studSelection)
+        {
+            for (auto name : elem.second)
+            {
+                std::cout << padTo(to_string(elem.first), PADDING) << "| "
+                          << padTo(name, PADDING - 1) << std::endl;
+            }
+        }
+    }
+
     // create <map> from students
     this->studPriorizing = {};
     for (auto studRow : input->studSelection)
@@ -349,6 +366,12 @@ DescisionPipeline::DescisionPipeline(InputStruct const *input) : csvMan(CSVManag
  */
 Student *DescisionPipeline::decideForStudent()
 {
+    if (studPriorizing.size() == 0)
+    {
+        puts("ERROR: no valid selection of students");
+        return nullptr; // return nullptr when no students to decide
+    }
+
     // First elimination phase
     if (input->verbose)
         puts("\n----------------- First sorting out --------------------");
