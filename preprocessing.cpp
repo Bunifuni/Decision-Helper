@@ -252,15 +252,6 @@ std::map<int, std::set<std::string>> processSelectionStr(char *selectionStr)
         selectionMap.insert({0, studsInRow});
     }
 
-    // TODO verbose
-    for (auto elem : selectionMap)
-    {
-        for (auto name : elem.second)
-        {
-            std::cout << elem.first << "\t" << name << std::endl;
-        }
-    }
-
     return selectionMap;
 }
 
