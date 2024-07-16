@@ -6,6 +6,8 @@
 #include <random>
 #include "DescisionPipeline.hpp"
 
+#define PADDING 15
+
 /**
  * @brief Returns set of student-names from given map with closest amount of points <= <leqPoints>
  *
@@ -215,7 +217,7 @@ void DescisionPipeline::rulePriorizeCorrectSemGroup(std::string semGroup, uint8_
         {
             this->studPriorizing.at(studName) += priorityValue; // increase priority
             if (input->verbose)                                 // verbose output
-                std::cout << studName << "\tis in correct seminar\t- priorize by " << to_string(priorityValue) << std::endl;
+                std::cout << padTo(studName, PADDING) << "\tis in correct seminar\t- priorize by " << to_string(priorityValue) << std::endl;
         }
     }
 }
@@ -238,7 +240,7 @@ void DescisionPipeline::rulePriorizeRepeaters(std::string semGroup, uint8_t prio
         {
             this->studPriorizing.at(studName) += priorityValue; // increase priority
             if (input->verbose)                                 // verbose output
-                std::cout << studName << "\tseems to be repeater\t- priorize by " << to_string(priorityValue) << std::endl;
+                std::cout << padTo(studName, PADDING) << "\tseems to be repeater\t- priorize by " << to_string(priorityValue) << std::endl;
         }
     }
 }
