@@ -15,6 +15,8 @@
  */
 std::set<std::string> DescisionPipeline::closestLEQPointsStudents(uint8_t leqPoints, std::map<std::string, uint8_t> studs)
 {
+    if (input->verbose)
+        std::cout << "Searching for students with " << to_string(leqPoints) << " points";
     // Find students with points equal leqPoints
     std::set<std::string> closestStuds;
     for (auto it = studs.begin(); it != studs.end(); ++it)
@@ -25,10 +27,21 @@ std::set<std::string> DescisionPipeline::closestLEQPointsStudents(uint8_t leqPoi
     // return when Students found, otherwise recur method with leqPoints -1 if possible
     if (closestStuds.empty() && leqPoints > 0)
     {
+        if (input->verbose)
+            std::cout << "\t- no student found\n";
         return closestLEQPointsStudents(--leqPoints, studs);
     }
     else
     {
+        if (input->verbose && !closestStuds.empty())
+        {
+            std::cout << "\t- found:\n";
+            listStrings(closestStuds);
+        }
+        else
+        {
+            std::cout << "\n";
+        }
         return closestStuds;
     }
 }
@@ -41,6 +54,8 @@ std::set<std::string> DescisionPipeline::closestLEQPointsStudents(uint8_t leqPoi
  */
 std::set<std::string> DescisionPipeline::closestGEQPointsStudents(uint8_t geqPoints, std::map<std::string, uint8_t> studs)
 {
+    if (input->verbose)
+        std::cout << "Searching for students with " << to_string(geqPoints) << " points";
     // Find students with points equal leqPoints
     std::set<std::string> closestStuds;
     for (auto it = studs.begin(); it != studs.end(); ++it)
@@ -51,10 +66,21 @@ std::set<std::string> DescisionPipeline::closestGEQPointsStudents(uint8_t geqPoi
     // return when Students found, otherwise recur method with greaterPoints + 1 (and geqPoints no overflow to terminate)
     if (closestStuds.empty() && (uint8_t)(geqPoints + 1) >= geqPoints)
     {
+        if (input->verbose)
+            std::cout << "\t- no student found\n";
         return closestGEQPointsStudents(++geqPoints, studs);
     }
     else
     {
+        if (input->verbose && !closestStuds.empty())
+        {
+            std::cout << "\t- found:\n";
+            listStrings(closestStuds);
+        }
+        else
+        {
+            std::cout << "\n";
+        }
         return closestStuds;
     }
 }
@@ -110,6 +136,16 @@ std::string DescisionPipeline::getRandomStudent()
     }
     return it->first;
 }
+/**
+ * @brief Prints all strings from set to terminal.
+ *
+ * @param listingSet
+ */
+void DescisionPipeline::listStrings(std::set<std::string> const &listingSet)
+{
+    for (auto str : listingSet)
+        std::cout << "\t" << str << std::endl;
+}
 
 /**
  * @brief Eliminates all students from selection, whose difference to the preferred score is too high
@@ -123,11 +159,18 @@ std::string DescisionPipeline::getRandomStudent()
  */
 void DescisionPipeline::rulePreferredPoints(uint8_t preferredPoints)
 {
+    if (input->verbose) // verbose output
+        std::cout << "preferred points: " << to_string(preferredPoints) << std::endl;
     // Find students to remain
     std::set<std::string> remainingStuds = closestLEQPointsStudents(preferredPoints, this->studPriorizing);
     // Check if students were found that have preferred points
     if (remainingStuds.empty())
     {
+        if (input->verbose) // verbose output
+        {
+            std::cout << "No student with <= " << to_string(preferredPoints) << " points found.\n"
+                      << "Searching for students with points > " << to_string(preferredPoints) << std::endl;
+        }
         remainingStuds = closestGEQPointsStudents(preferredPoints + 1, this->studPriorizing);
     }
     // Discard students from map that are not remaining students
