@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <iterator>
 #include <random>
+#include <time.h>
 #include "DescisionPipeline.hpp"
 
 #define PADDING 15
@@ -142,7 +143,8 @@ void DescisionPipeline::removeLeastPriorized()
  */
 std::string DescisionPipeline::getRandomStudent()
 {
-    int randInt = std::rand() % studPriorizing.size();
+    srand (time(NULL));
+    int randInt = rand() % studPriorizing.size();
     std::map<std::string, uint8_t>::iterator it = studPriorizing.begin();
     for (int i = 0; i < randInt; i++)
     {
@@ -159,6 +161,16 @@ void DescisionPipeline::listStrings(std::set<std::string> const &listingSet)
 {
     for (auto str : listingSet)
         std::cout << "\t" << str << std::endl;
+}
+/**
+ * @brief Prints all strings of given map to terminal
+ *
+ * @param listingMap std::map to be printed
+ */
+void DescisionPipeline::listStrings(std::map<std::string, uint8_t> const &listingMap)
+{
+    for (auto pair : listingMap)
+        std::cout << "\t" << pair.first << std::endl;
 }
 
 /**
@@ -392,7 +404,15 @@ Student *DescisionPipeline::decideForStudent()
     if (input->verbose)
         puts("\n----------------- Final decision phase -----------------");
     if (studPriorizing.size() > 1)
-        return csvMan.getStudent(getRandomStudent());        // random descision if more than 1 students now
+    {
+        if (input->verbose)
+        {
+            puts("At least two students remain:");
+            listStrings(studPriorizing);
+            puts("--> Random pick of student\n");
+        }
+        return csvMan.getStudent(getRandomStudent()); // random descision if more than 1 students now
+    }
     return csvMan.getStudent(studPriorizing.begin()->first); // return only student in map
 }
 

@@ -20,6 +20,7 @@ private:
     void removeLeastPriorized();
     std::string getRandomStudent();
     void listStrings(std::set<std::string> const &listingSet);
+    void listStrings(std::map<std::string, uint8_t> const &listingMap);
 
     void rulePreferredPoints(uint8_t preferredPoints);
     void rulePriorizeCorrectSemGroup(std::string semGroup, uint8_t priorityValue);
