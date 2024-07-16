@@ -220,6 +220,11 @@ void DescisionPipeline::ruleFurthestInFront()
     }
 }
 
+/**
+ * @brief Construct a new Descision Pipeline:: Descision Pipeline object
+ * 
+ * @param input InputStruct holding the input information
+ */
 DescisionPipeline::DescisionPipeline(InputStruct const *input) : csvMan(CSVManager(input->csvFile)), input(input)
 {
     // create <map> from students
@@ -237,6 +242,12 @@ DescisionPipeline::DescisionPipeline(InputStruct const *input) : csvMan(CSVManag
     }
 }
 
+/**
+ * @brief Returns pointer to student object. Decides for one student by going through 3 phases of 
+ * decisions. If there are several students left in the selection at the end, one is chosen at random.
+ * 
+ * @return Student* 
+ */
 Student *DescisionPipeline::decideForStudent()
 {
     // First elimination phase
