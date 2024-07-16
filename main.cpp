@@ -1,16 +1,16 @@
 #include <iostream>
-#include <vector>
-#include "Student.hpp"
-
-using namespace std;
+#include "preprocessing.hpp"
+#include "DescisionPipeline.hpp"
 
 int main(int argc, char *argv[])
 {
-    // cout << "Hello World" << endl;
-    char csvLine[] = "MMuster,21INB-1,2\n";
-    Student subject1 = Student(csvLine, sizeof(csvLine));
-    cout << subject1.getName() << "\n"
-         << subject1.getSemGroup() << "\n"
-         << to_string(subject1.getPoints()) << endl;
+    InputStruct input;
+    if (preprocessing(argc, argv, &input) == -1)
+        exit(-1);
+    DescisionPipeline decider(&input);
+
+    Student *chosenOne = decider.decideForStudent();
+    if (chosenOne)
+        std::cout << "The chosen student is: \t" << chosenOne->getName() << std::endl;
     return 0;
 }
