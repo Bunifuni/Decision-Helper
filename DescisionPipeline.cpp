@@ -58,7 +58,7 @@ std::set<std::string> DescisionPipeline::closestGEQPointsStudents(uint8_t geqPoi
 {
     if (input->verbose)
         std::cout << "Searching for students with " << to_string(geqPoints) << " points";
-    // Find students with points equal leqPoints
+    // Find students with points equal geqPoints
     std::set<std::string> closestStuds;
     for (auto it = studs.begin(); it != studs.end(); ++it)
     {
