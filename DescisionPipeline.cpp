@@ -146,6 +146,22 @@ void DescisionPipeline::listStrings(std::set<std::string> const &listingSet)
     for (auto str : listingSet)
         std::cout << "\t" << str << std::endl;
 }
+/**
+ * @brief Returns copy of given string padded to given num. When <str> is already bigger than num, 
+ * nothing happens.
+ * 
+ * @param str string to pad
+ * @param num size for string
+ * @param paddingChar char to pad with
+ * @return std::string 
+ */
+std::string DescisionPipeline::padTo(std::string const &str, const size_t num, const char paddingChar = ' ')
+{
+    std::string padStr = str;
+    if (num > padStr.size())
+        padStr.insert(padStr.end(), num - padStr.size(), paddingChar);
+    return padStr;
+}
 
 /**
  * @brief Eliminates all students from selection, whose difference to the preferred score is too high
@@ -169,7 +185,7 @@ void DescisionPipeline::rulePreferredPoints(uint8_t preferredPoints)
         if (input->verbose) // verbose output
         {
             std::cout << "No student with <= " << to_string(preferredPoints) << " points found.\n"
-                      << "Searching for students with points > " << to_string(preferredPoints) << std::endl;
+                      << "Searching for students with > " << to_string(preferredPoints) << " points\n";
         }
         remainingStuds = closestGEQPointsStudents(preferredPoints + 1, this->studPriorizing);
     }
