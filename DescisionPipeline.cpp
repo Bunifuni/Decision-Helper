@@ -178,6 +178,8 @@ void DescisionPipeline::rulePriorizeRepeaters(std::string semGroup, uint8_t prio
         if (studSemGroup.at(1) != semGroup.at(1))
         {
             this->studPriorizing.at(studName) += priorityValue; // increase priority
+            if (input->verbose)                                 // verbose output
+                std::cout << studName << " seems to be repeater\t- priorize by " << to_string(priorityValue) << std::endl;
         }
     }
 }
