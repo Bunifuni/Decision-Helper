@@ -79,10 +79,12 @@ int preprocessing(int argc, char *argv[], InputStruct *input)
  */
 int processOpts(int argc, char *argv[], InputStruct *input)
 {
-    const char *const short_opts = "f:g:s:hrv";
+    const char *const short_opts = "f:g:p:s:hrv";
     const option long_opts[] = {
         {"file", required_argument, nullptr, 'f'},
         {"group", required_argument, nullptr, 'g'},
+        {"points", required_argument, nullptr, 'p'},
+        {"score", required_argument, nullptr, 'p'},
         {"semgroup", required_argument, nullptr, 'g'},
         {"semGroup", required_argument, nullptr, 'g'},
         {"seminar", required_argument, nullptr, 'g'},
@@ -119,6 +121,11 @@ int processOpts(int argc, char *argv[], InputStruct *input)
         case 'g': // seminar-group
             // printf("option -g with value `%s'\n", optarg);
             input->semGroup = optarg;
+            break;
+
+        case 'p':
+            // printf("option -p with value `%p'\n", optarg);
+            input->preferredPoints = atoi(optarg);
             break;
 
         case 's': // selection e.g. students
