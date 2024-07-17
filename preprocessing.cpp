@@ -18,9 +18,9 @@ void printHelp()
 {
     std::cout << "Usage: Descision-Helper [command] [options]\n\n"
               << "Commands:\n"
-              << "  decide     Make a decision for a student.\n"
-              << "  increase   Increment a student's points.\n"
-              << "  decrease   Decrement a student's points.\n\n"
+              << "  decide      Make a decision for a student.\n"
+              << "  add         Adds a point to a student's score.\n"
+              << "  sub         Subtracts a point of student's score.\n\n"
               << "Options:\n"
               << "  -f, --file <filename>      Specify the CSV file. Default = 'student.csv'\n"
               << "  -g, --group <group>        Specify the seminar group.\n"
@@ -32,8 +32,8 @@ void printHelp()
               << "Examples:\n"
               << "  program decide -g 21INB-1 -p 1 -s MMustermann,MMusterfrau,JBinger\n"
               << "  program decide -s \"John:1,Jane:2\" -r -v\n"
-              << "  program increase --selection John\n"
-              << "  program decrease --file=data.csv --selection=John,Jane \n"
+              << "  program add --selection John\n"
+              << "  program sub --file=data.csv --selection=John,Jane \n"
               << std::endl;
     exit(1);
 }
