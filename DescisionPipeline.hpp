@@ -30,6 +30,8 @@ private:
 public:
     DescisionPipeline(InputStruct const *input);
     Student *decideForStudent();
+    void incrementPointsOfSelection();
+    void decrementPointsOfSelection();
 };
 
 std::string padTo(std::string const &str, const size_t num, const char paddingChar = ' ');

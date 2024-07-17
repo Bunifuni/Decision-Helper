@@ -143,7 +143,7 @@ void DescisionPipeline::removeLeastPriorized()
  */
 std::string DescisionPipeline::getRandomStudent()
 {
-    srand (time(NULL));
+    srand(time(NULL));
     int randInt = rand() % studPriorizing.size();
     std::map<std::string, uint8_t>::iterator it = studPriorizing.begin();
     for (int i = 0; i < randInt; i++)
@@ -414,6 +414,25 @@ Student *DescisionPipeline::decideForStudent()
         return csvMan.getStudent(getRandomStudent()); // random descision if more than 1 students now
     }
     return csvMan.getStudent(studPriorizing.begin()->first); // return only student in map
+}
+
+/**
+ * @brief Increments point-score of every student of selection by 1
+ *
+ */
+void DescisionPipeline::incrementPointsOfSelection()
+{
+    for (auto pair : studPriorizing)
+        csvMan.incrementPoints(pair.first);
+}
+/**
+ * @brief Decrements point-score of every student of selection by 1
+ *
+ */
+void DescisionPipeline::decrementPointsOfSelection()
+{
+    for (auto pair : studPriorizing)
+        csvMan.decrementPoints(pair.first);
 }
 
 /**
