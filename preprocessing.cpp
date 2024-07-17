@@ -43,7 +43,7 @@ void printHelp()
  */
 void printHelpHint()
 {
-    puts("To display help, use the -h or --help flag.");
+    puts("To display help, use the -h or --help option.");
 }
 
 int preprocessing(int argc, char *argv[], InputStruct *input)
