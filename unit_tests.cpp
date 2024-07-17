@@ -67,7 +67,6 @@ protected:
         input1 = new InputStruct;
         input1->csvFile = "test_students.csv";
         input1->studSelection = studs;
-        input1->verbose = true;
         input1->semGroup = "22INB-2";
         pipe1 = new DescisionPipeline(input1);
 
