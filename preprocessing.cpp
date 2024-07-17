@@ -18,7 +18,7 @@ void printHelp()
 {
     std::cout << "Usage: Descision-Helper [command] [options]\n\n"
               << "Commands:\n"
-              << "  decide      Make a decision for a student.\n"
+              << "  decide      Decide for student of selection.\n"
               << "  add         Adds a point to a student's score.\n"
               << "  sub         Subtracts a point of student's score.\n\n"
               << "Options:\n"
