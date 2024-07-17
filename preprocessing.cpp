@@ -16,8 +16,25 @@ static uint8_t seatingRow_check = 0;
  */
 void printHelp()
 {
-    // TODO
-    puts("Help");
+    std::cout << "Usage: Descision-Helper [command] [options]\n\n"
+              << "Commands:\n"
+              << "  decide     Make a decision for a student.\n"
+              << "  increase   Increment a student's points.\n"
+              << "  decrease   Decrement a student's points.\n\n"
+              << "Options:\n"
+              << "  -f, --file <filename>      Specify the CSV file. Default = 'student.csv'\n"
+              << "  -g, --group <group>        Specify the seminar group.\n"
+              << "  -p, --points <points>      Specify the preferred points. Default = 0\n"
+              << "  -s, --selection <students> Specify the selection of students (comma-separated). Specify row by colon after name.\n"
+              << "  -h, --help                 Display this help text.\n"
+              << "  -r, --row                  Consider seating rows.\n"
+              << "  -v, --verbose              Enable verbose output.\n\n"
+              << "Examples:\n"
+              << "  program decide -g 21INB-1 -p 1 -s MMustermann,MMusterfrau,JBinger\n"
+              << "  program decide -s \"John:1,Jane:2\" -r -v\n"
+              << "  program increase --selection John\n"
+              << "  program decrease --file=data.csv --selection=John,Jane \n"
+              << std::endl;
     exit(1);
 }
 /**
