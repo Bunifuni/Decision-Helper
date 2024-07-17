@@ -194,7 +194,7 @@ void DescisionPipeline::rulePreferredPoints(uint8_t preferredPoints)
     {
         if (input->verbose) // verbose output
         {
-            std::cout << "No student with <= " << to_string(preferredPoints) << " points found.\n"
+            std::cout << "\nNo student with <= " << to_string(preferredPoints) << " points found.\n"
                       << "Searching for students with > " << to_string(preferredPoints) << " points\n";
         }
         remainingStuds = closestGEQPointsStudents(preferredPoints + 1, this->studPriorizing);
