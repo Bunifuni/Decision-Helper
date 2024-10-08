@@ -8,7 +8,8 @@
 #define STUDENT_SEPARATOR ","
 #define SEATINGROW_SEPARATOR ":"
 
-static uint8_t seatingRow_check = 0;
+static bool consider_row_flag = false; // flag for considering seating row
+static int allow_repeater_flag = 1;    // flag for allowing repeaters
 
 /**
  * @brief Prints the help-text in terminal. When this method is called, the program exits.
@@ -111,6 +112,7 @@ int processOpts(int argc, char *argv[], InputStruct *input)
         {"help", no_argument, nullptr, 'h'},
         {"row", no_argument, nullptr, 'r'},
         {"verbose", no_argument, nullptr, 'v'},
+        {"no-repeater", no_argument, &allow_repeater_flag, 0},
         {0, 0, 0, 0}};
 
     int c;
@@ -157,7 +159,7 @@ int processOpts(int argc, char *argv[], InputStruct *input)
 
         case 'r': // (consider) row
             // puts("option -r\n");
-            seatingRow_check = (uint8_t)1;
+            consider_row_flag = true;
             break;
         case 'v': // verbose
             // puts("option -v\n");
@@ -172,6 +174,10 @@ int processOpts(int argc, char *argv[], InputStruct *input)
         }
     }
 
+    // set allowRepeater in InputStruct false when flag not set
+    if (allow_repeater_flag == 0)
+        input->allowRepeater = false;
+
     // check if selection is empty
     if (selectionStr == nullptr)
     {
@@ -185,13 +191,13 @@ int processOpts(int argc, char *argv[], InputStruct *input)
     if (input->studSelection.empty())
     {
         std::cout << "Selection argument is not valid. It has to be \n 1 student:\t<studentName>";
-        if (seatingRow_check)
+        if (consider_row_flag)
             std::cout << ":<seatingRow>";
         std::cout << "\n>1 students:\t<student1Name>";
-        if (seatingRow_check)
+        if (consider_row_flag)
             std::cout << ":<seatingRow>";
         std::cout << ",<student2Name>";
-        if (seatingRow_check)
+        if (consider_row_flag)
             std::cout << ":<seatingRow>";
         std::cout << ",...\n";
         return -1;
@@ -234,7 +240,7 @@ std::map<int, std::set<std::string>> processSelectionStr(char *selectionStr)
     std::vector<std::string> splitStuds = separateLine(selectionStr, STUDENT_SEPARATOR);
 
     // check if seating row has to be considered
-    if (seatingRow_check)
+    if (consider_row_flag)
     {
         auto splittedVector = splitElements(splitStuds, SEATINGROW_SEPARATOR); // split names from seating row
         int row = 0;

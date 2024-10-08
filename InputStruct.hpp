@@ -26,6 +26,7 @@ struct InputStruct
     ProgramCommand state = unhandled;
 
     bool verbose = false;
+    bool allowRepeater = true;
     uint8_t preferredPoints = 0;
     uint8_t priorityCorrectSemGroup = 2;
     uint8_t priorityRepeater = 1;
