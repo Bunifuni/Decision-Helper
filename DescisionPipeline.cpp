@@ -133,8 +133,27 @@ void DescisionPipeline::removeLeastPriorized()
     uint8_t maxPriorize = getMaxPriorizing();
     if (input->verbose)
         std::cout << "Max priorize-value: " << to_string(maxPriorize) << std::endl;
-    ;
     removeLessPriorizedThen(maxPriorize);
+}
+/**
+ * @brief Removes repeaters (recognized by differing from semGroup)
+ *
+ * @param semGroup current seminar group
+ */
+void DescisionPipeline::removeRepeaters(std::string semGroup)
+{
+    for (auto it = this->studPriorizing.begin(); it != this->studPriorizing.end();)
+    {
+        std::string studName = it->first;
+        std::string studSemGroup = this->csvMan.getStudent(studName)->getSemGroup();
+        // Repeaters seminar group differ guaranteed in second digit of the year (XYINB-Z)
+        if (studSemGroup.at(1) != semGroup.at(1))
+            it = studPriorizing.erase(it);
+        else
+            ++it;
+        if (input->verbose)
+            std::cout << "Removing repeater \t" << studName << std::endl;
+    }
 }
 /**
  * @brief Returns the name of a random student in the priorizing collection
@@ -389,7 +408,17 @@ Student *DescisionPipeline::decideForStudent()
         if (input->verbose)
             puts("\n----------------- Prioritization phase -----------------");
         rulePriorizeCorrectSemGroup(input->semGroup, input->priorityCorrectSemGroup);
-        rulePriorizeRepeaters(input->semGroup, input->priorityRepeater);
+        if (input->allowRepeater)
+            rulePriorizeRepeaters(input->semGroup, input->priorityRepeater);
+        else
+            removeRepeaters(input->semGroup); //TODO : Wiederholer entfernen
+            /*TODO
+                Wiederholer entfernen -> Probleme:
+                - leere Auswahl --> was passiert wenn nur Wiederholer in Auswahl vorhanden sind
+                - Wiederholer müssen direkt von Anfang an aus Selektion herausgenommen werden, sodass rulePreferredPoints Wiederholer nicht "sieht"  
+                - Hilfe-Text für "--no-repeater" ergänzen
+                - Ausgabe wenn leere Auswahl auftritt
+            */
     }
 
     // Second elimination phase

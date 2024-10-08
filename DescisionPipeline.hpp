@@ -18,6 +18,7 @@ private:
     uint8_t getMaxPriorizing();
     void removeLessPriorizedThen(uint8_t priorizeValue);
     void removeLeastPriorized();
+    void removeRepeaters(std::string semGroup);
     std::string getRandomStudent();
     void listStrings(std::set<std::string> const &listingSet);
     void listStrings(std::map<std::string, uint8_t> const &listingMap);
