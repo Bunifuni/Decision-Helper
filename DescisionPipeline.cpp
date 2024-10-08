@@ -419,12 +419,6 @@ Student *DescisionPipeline::decideForStudent()
         {
             puts("WARNING - Could not sort out repeaters, because the seminar group was not specified.");
         }
-        /*TODO
-    Wiederholer entfernen -> Probleme:
-    - leere Auswahl --> was passiert wenn nur Wiederholer in Auswahl vorhanden sind
-    - Hilfe-Text für "--no-repeater" ergänzen
-    - Ausgabe wenn leere Auswahl auftritt
-*/
     }
     rulePreferredPoints(input->preferredPoints);
 
