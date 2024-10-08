@@ -148,11 +148,15 @@ void DescisionPipeline::removeRepeaters(std::string semGroup)
         std::string studSemGroup = this->csvMan.getStudent(studName)->getSemGroup();
         // Repeaters seminar group differ guaranteed in second digit of the year (XYINB-Z)
         if (studSemGroup.at(1) != semGroup.at(1))
+        {
             it = studPriorizing.erase(it);
+            if (input->verbose)
+                std::cout << "Removing repeater \t" << studName << std::endl;
+        }
         else
+        {
             ++it;
-        if (input->verbose)
-            std::cout << "Removing repeater \t" << studName << std::endl;
+        }
     }
 }
 /**
@@ -400,6 +404,28 @@ Student *DescisionPipeline::decideForStudent()
     // First elimination phase
     if (input->verbose)
         puts("\n----------------- First sorting out --------------------");
+    if (input->allowRepeater == false)
+    {
+        try
+        {
+            removeRepeaters(input->semGroup);
+            if (studPriorizing.empty())
+            {
+                puts("ERROR - Only repeaters are selected, but no repeaters are allowed.");
+                exit(0);
+            }
+        }
+        catch (std::out_of_range)
+        {
+            puts("WARNING - Could not sort out repeaters, because the seminar group was not specified.");
+        }
+        /*TODO
+    Wiederholer entfernen -> Probleme:
+    - leere Auswahl --> was passiert wenn nur Wiederholer in Auswahl vorhanden sind
+    - Hilfe-Text für "--no-repeater" ergänzen
+    - Ausgabe wenn leere Auswahl auftritt
+*/
+    }
     rulePreferredPoints(input->preferredPoints);
 
     // Prioritization phase
@@ -410,15 +436,6 @@ Student *DescisionPipeline::decideForStudent()
         rulePriorizeCorrectSemGroup(input->semGroup, input->priorityCorrectSemGroup);
         if (input->allowRepeater)
             rulePriorizeRepeaters(input->semGroup, input->priorityRepeater);
-        else
-            removeRepeaters(input->semGroup); //TODO : Wiederholer entfernen
-            /*TODO
-                Wiederholer entfernen -> Probleme:
-                - leere Auswahl --> was passiert wenn nur Wiederholer in Auswahl vorhanden sind
-                - Wiederholer müssen direkt von Anfang an aus Selektion herausgenommen werden, sodass rulePreferredPoints Wiederholer nicht "sieht"  
-                - Hilfe-Text für "--no-repeater" ergänzen
-                - Ausgabe wenn leere Auswahl auftritt
-            */
     }
 
     // Second elimination phase
