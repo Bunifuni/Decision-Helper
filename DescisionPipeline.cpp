@@ -381,7 +381,7 @@ DescisionPipeline::DescisionPipeline(InputStruct const *input) : csvMan(CSVManag
             // does given student exist?
             if (csvMan.getStudent(studName) != nullptr)
                 this->studPriorizing.insert({studName, 0});
-            else if (input->verbose)
+            else
                 std::cout << "Student \"" << studName << "\" does not exist." << std::endl;
         }
     }
