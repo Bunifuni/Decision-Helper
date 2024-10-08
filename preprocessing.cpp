@@ -26,15 +26,16 @@ void printHelp()
               << "  -f, --file <filename>      Specify the CSV file. Default = 'student.csv'\n"
               << "  -g, --group <group>        Specify the seminar group.\n"
               << "  -p, --points <points>      Specify the preferred points. Default = 0\n"
-              << "  -s, --selection <students> Specify the selection of students (comma-separated). Specify row by colon after name.\n"
+              << "  -s, --selection <students> Specify the selection of students (comma-separated). Optional: Specify row by colon after name.\n"
               << "  -h, --help                 Display this help text.\n"
               << "  -r, --row                  Consider seating rows.\n"
-              << "  -v, --verbose              Enable verbose output.\n\n"
+              << "  -v, --verbose              Enable verbose output.\n"
+              << "  --no-repeater              Sort out repeaters.\n\n"
               << "Examples:\n"
-              << "  program decide -g 21INB-1 -p 1 -s MMustermann,MMusterfrau,JBinger\n"
-              << "  program decide -s \"John:1,Jane:2\" -r -v\n"
-              << "  program add --selection John\n"
-              << "  program sub --file=data.csv --selection=John,Jane \n"
+              << "  Descision-Helper decide -g 21INB-1 -p 1 -s MMusterfrau,MMustermann,JBinger\n"
+              << "  Descision-Helper decide -s \"John:1,Jane:2\" -r -v\n"
+              << "  Descision-Helper add --selection John\n"
+              << "  Descision-Helper sub --file=data.csv --selection=John,Jane \n"
               << std::endl;
     exit(1);
 }
